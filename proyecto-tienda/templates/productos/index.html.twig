@@ -9,16 +9,14 @@
 					<div class="card h-100">
 						<div class="card-body">
 							<h5 class="card-title">{{ producto.nombre }}</h5>
-                            <img src="{{ producto.image_link }}" class="card-img-top" alt="{{ producto.nombre }}">
-                            
+							<img src="{{ producto.image_link }}" class="img-thumbnail" style="max-width: 200px; max-height: 200px;">
 							<p class="card-text">
-                                {{ producto.precio|number_format(2, ',', '.') }} €
+								{{ producto.precio|number_format(2, ',', '.') }} €
 							</p>
 							<a href="#" class="btn btn-primary">Añadir al carrito</a>
 						</div>
 					</div>
 				</div>
-                
 			{% endfor %}
 		</div>
 	</div>
