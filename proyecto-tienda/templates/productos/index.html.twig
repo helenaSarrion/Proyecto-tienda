@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container py-5">
+		<h1 class="text-center mb-4">Nuestros productos</h1>
+		<div class="row row-cols-1 row-cols-md-3 g-4">
+			{% for producto in productos %}
+				<div class="col">
+					<div class="card h-100">
+						<div class="card-body">
+							<h5 class="card-title">{{ producto.nombre }}</h5>
+                            <img src="{{ producto.image_link }}" class="card-img-top" alt="{{ producto.nombre }}">
+                            
+							<p class="card-text">
+                                {{ producto.precio|number_format(2, ',', '.') }} €
+							</p>
+							<a href="#" class="btn btn-primary">Añadir al carrito</a>
+						</div>
+					</div>
+				</div>
+                
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}
