@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Carrito{% endblock %}
+
+{% block body %}
+    <h1>Carrito</h1>
+
+    {% if productos is empty %}
+        <p>Tu carrito está vacío.</p>
+    {% else %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set total = 0 %}
+                {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.precio }}€</td>
+                        <td>
+                            <form method="POST" action="{{ path('actualizar_cantidad', {'id': producto.codprod}) }}">
+                                <div class="input-group">
+                                    <input type="number" name="cantidad" value="{{ carrito[producto.codprod] }}" min="1" max="{{ producto.stock }}" class="form-control">
+                                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                                </div>
+                            </form>
+                        </td>
+                        <td>{{ producto.precio * carrito[producto.codprod] }}€</td>
+                        <td>
+                            <a href="{{ path('quitar_del_carrito', {'codprod': producto.codprod}) }}" class="btn btn-danger">Quitar</a>
+                        </td>
+                    </tr>
+                    {% set total = total + (producto.precio * carrito[producto.codprod]) %}
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong>Total:</strong></td>
+                    <td><strong>{{ total }}€</strong></td>
+                    <td>
+                        <a href="{{ path('vaciar_carrito') }}" class="btn btn-warning">Vaciar</a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <a href="{{ path('inicio') }}" class="btn btn-primary">Seguir comprando</a>
+        <a href="{{ path('checkout') }}" class="btn btn-success">Comprar</a>
+    {% endif %}
+{% endblock %}
