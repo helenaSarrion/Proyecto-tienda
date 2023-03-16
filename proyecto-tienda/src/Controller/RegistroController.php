@@ -19,12 +19,15 @@ class RegistroController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
 
+        $nombre = $request->request->get('nombre');
         $email = $request->request->get('email');
         $password = $request->request->get('password');
 
         if ($email !== null) {
             $user = new User();
+            $user->setRoles(['ROLE_USER']);
             $user->setEmail($email);
+            $user->setNombre($nombre);
             $user->setPassword($passwordEncoder->encodePassword($user, $password));
 
             $entityManager->persist($user);

@@ -14,8 +14,8 @@
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('productos') }}">Productos</a>
 				</li>
-				<li class="nav-item dropdown">
-                    {#<a class="nav-link" href="{{ path('categorias') }}">Categorias</a> #}
+				<li
+					class="nav-item dropdown">{#<a class="nav-link" href="{{ path('categorias') }}">Categorias</a> #}
 				</li>
 			</ul>
 			<ul class="navbar-nav">
@@ -30,9 +30,14 @@
 						<a class="nav-link" href="{{ path('logout') }}">Logout</a>
 					</li>
 				{% else %}
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}">Login</a>
 					</li>
+                    {% if app.user %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('mi_cuenta') }}">Mi cuenta</a>
+                        </li>
+                    {% endif %}
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path('registro') }}">Registrarse</a>
 					</li>
