@@ -92,6 +92,4 @@ class CarritoController extends AbstractController
         return $this->redirectToRoute('carrito');
     }
 
-
-
 }

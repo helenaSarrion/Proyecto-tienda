@@ -9,4 +9,3 @@ inicio:
 nosotros:
     path: /nosotros
     controller: App\Controller\NosotrosController::nosotros
-    
