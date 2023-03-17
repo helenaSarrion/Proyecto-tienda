@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-light bg-transparent">
 		<a class="navbar-brand">FanVerse</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -9,10 +9,13 @@
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item">
-					<a class="nav-link" href="{{ path('nosotros') }}">Nosotros</a>
+					<a class="nav-link" href="{{ path('inicio') }}">Inicio</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="{{ path('productos') }}">Productos</a>
+					<a class="nav-link" href="{{ path('nosotros') }}">Sobre nosotros</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('productos') }}">Tienda</a>
 				</li>
 			</ul>
 			<ul class="navbar-nav">
@@ -42,6 +45,7 @@
 			</ul>
 		</div>
 	</nav>
+
 	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 		<ol class="carousel-indicators">
 			<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -49,17 +53,20 @@
 			<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
 		</ol>
 		<div class="carousel-inner">
-			<div class="carousel-item active">
+			<div
+				class="carousel-item active">
 				{#aqui se van a mostrar las imagenes de las ofertas de la semana#}
-				<img class="d-block w-100" src="https://banco-imagenes-helen.s3.eu-north-1.amazonaws.com/imagen1.jpg" alt="First slide" width="200" height="200">
+				<img class="d-block w-100" src="#" alt="First slide" width="200" height="200">
 			</div>
-			<div class="carousel-item">
+			<div
+				class="carousel-item">
 				{#aqui se van a mostrar las imagenes de las ofertas de la semana#}
-				<img class="d-block w-100" src="https://banco-imagenes-helen.s3.eu-north-1.amazonaws.com/imagen1.jpg" alt="Second slide" width="200" height="200">
+				<img class="d-block w-100" src="#" alt="Second slide" width="200" height="200">
 			</div>
-			<div class="carousel-item">
+			<div
+				class="carousel-item">
 				{#aqui se van a mostrar las imagenes de las ofertas de la semana#}
-				<img class="d-block w-100" src="https://banco-imagenes-helen.s3.eu-north-1.amazonaws.com/imagen1.jpg" alt="Third slide" width="200" height="200">
+				<img class="d-block w-100" src="#" alt="Third slide" width="200" height="200">
 			</div>
 		</div>
 		<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -71,4 +78,24 @@
 			<span class="sr-only">Next</span>
 		</a>
 	</div>
+
+
+	<hr>
+	<div class="row mt-5">
+		<div class="col-md-12 text-center">
+			<a href="https://www.facebook.com/"><img src="https://img.icons8.com/color/48/000000/facebook-new.png"/></a>
+			<a href="https://www.instagram.com/"><img src="https://img.icons8.com/color/48/000000/instagram-new.png"/></a>
+			<a href="https://twitter.com/"><img src="https://img.icons8.com/color/48/000000/twitter.png"/></a>
+			<a href="https://www.tiktok.com/"><img src="https://img.icons8.com/color/48/000000/tiktok.png"/></a>
+		</div>
+	</div>
+	<footer class="mt-5">
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<p>&copy;
+					{{ "now"|date("Y") }}
+					Todos los derechos reservados</p>
+			</div>
+		</div>
+	</footer>
 {% endblock %}
