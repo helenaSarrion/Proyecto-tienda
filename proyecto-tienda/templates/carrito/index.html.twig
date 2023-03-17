@@ -1,99 +1,106 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Carrito{% endblock %}
+{% block title %}Carrito
+{% endblock %}
 
 {% block body %}
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand" href="{{ path('inicio') }}">FanVerse</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('nosotros') }}">Nosotros</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('productos') }}">Productos</a>
-				</li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('categorias') }}">Categorias</a>
-                </li>
-			</ul>
-			<ul class="navbar-nav">
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('carrito') }}">
-						<i class="fas fa-shopping-cart fa-lg">Cesta</i>
-						<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
-					</a>
-				</li>
-				{% if app.user %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+		<div class="container">
+			<a class="navbar-brand" href="#">FanVerse</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav mx-auto text-center">
 					<li class="nav-item">
-						<a class="nav-link" href="{{ path('logout') }}">Logout</a>
+						<a class="nav-link" href="{{ path('inicio') }}">Inicio</a>
 					</li>
-				{% else %}
 					<li class="nav-item">
-						<a class="nav-link" href="{{ path('app_login') }}">Login</a>
+						<a class="nav-link" href="{{ path('nosotros') }}">Sobre nosotros</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('productos') }}">Tienda</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('carrito') }}">
+							<i class="fas fa-shopping-cart fa-lg">Cesta</i>
+							<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
+						</a>
 					</li>
 					{% if app.user %}
 						<li class="nav-item">
-							<a class="nav-link" href="{{ path('mi_cuenta') }}">Mi cuenta</a>
+							<a class="nav-link" href="{{ path('logout') }}">Logout</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('app_login') }}">Login</a>
+						</li>
+						{% if app.user %}
+							<li class="nav-item">
+								<a class="nav-link" href="{{ path('mi_cuenta') }}">Mi cuenta</a>
+							</li>
+						{% endif %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('registro') }}">Registrarse</a>
 						</li>
 					{% endif %}
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('registro') }}">Registrarse</a>
-					</li>
-				{% endif %}
-			</ul>
+				</ul>
+			</div>
 		</div>
 	</nav>
-    <h1>Carrito</h1>
+	<h1>Carrito</h1>
 
-    {% if productos is empty %}
-        <p>Tu carrito está vacío</p>
-    {% else %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Precio</th>
-                    <th>Cantidad</th>
-                    <th>Total</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% set total = 0 %}
-                {% for producto in productos %}
-                    <tr>
-                        <td>{{ producto.nombre }}</td>
-                        <td>{{ producto.precio }}€</td>
-                        <td>
-                            <form method="POST" action="{{ path('actualizar_cantidad', {'id': producto.codprod}) }}">
-                                <div class="input-group">
-                                    <input type="number" name="cantidad" value="{{ carrito[producto.codprod] }}" min="1" max="{{ producto.stock }}" class="form-control">
-                                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                                </div>
-                            </form>
-                        </td>
-                        <td>{{ producto.precio * carrito[producto.codprod] }}€</td>
-                        <td>
-                            <a href="{{ path('quitar_del_carrito', {'codprod': producto.codprod}) }}" class="btn btn-danger">Quitar</a>
-                        </td>
-                    </tr>
-                    {% set total = total + (producto.precio * carrito[producto.codprod]) %}
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3"><strong>Total:</strong></td>
-                    <td><strong>{{ total }}€</strong></td>
-                    <td>
-                        <a href="{{ path('vaciar_carrito') }}" class="btn btn-warning">Vaciar</a>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-        <a href="{{ path('inicio') }}" class="btn btn-primary">Seguir comprando</a>
-    {% endif %}
+	{% if productos is empty %}
+		<p>Tu carrito está vacío</p>
+	{% else %}
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Producto</th>
+					<th>Precio</th>
+					<th>Cantidad</th>
+					<th>Total</th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set total = 0 %}
+				{% for producto in productos %}
+					<tr>
+						<td>{{ producto.nombre }}</td>
+						<td>{{ producto.precio }}€</td>
+						<td>
+							<form method="POST" action="{{ path('actualizar_cantidad', {'id': producto.codprod}) }}">
+								<div class="input-group">
+									<input type="number" name="cantidad" value="{{ carrito[producto.codprod] }}" min="1" max="{{ producto.stock }}" class="form-control">
+									<button type="submit" class="btn btn-primary">Actualizar</button>
+								</div>
+							</form>
+						</td>
+						<td>{{ producto.precio * carrito[producto.codprod] }}€</td>
+						<td>
+							<a href="{{ path('quitar_del_carrito', {'codprod': producto.codprod}) }}" class="btn btn-danger">Quitar</a>
+						</td>
+					</tr>
+					{% set total = total + (producto.precio * carrito[producto.codprod]) %}
+				{% endfor %}
+			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="3">
+						<strong>Total:</strong>
+					</td>
+					<td>
+						<strong>{{ total }}€</strong>
+					</td>
+					<td>
+						<a href="{{ path('vaciar_carrito') }}" class="btn btn-warning">Vaciar</a>
+					</td>
+				</tr>
+			</tfoot>
+		</table>
+		<a href="{{ path('inicio') }}" class="btn btn-primary">Seguir comprando</a>
+	{% endif %}
 {% endblock %}
