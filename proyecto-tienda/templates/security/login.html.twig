@@ -1,42 +1,87 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inicio sesion{% endblock %}
+{% block title %}Inicio sesion
+{% endblock %}
 
 {% block body %}
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-6">
-            <div class="card shadow-lg border-0 rounded-lg mt-5">
-                <div class="card-header"><h3 class="text-center font-weight-light my-4">Iniciar sesión</h3></div>
-                <div class="card-body">
-                    <form method="post">
-                        {% if error %}
-                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                        {% endif %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="{{ path('inicio') }}">FanVerse</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('nosotros') }}">Nosotros</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('productos') }}">Productos</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('carrito') }}">
+						<i class="fas fa-shopping-cart fa-lg">Cesta</i>
+						<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
+					</a>
+				</li>
+				{% if app.user %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('logout') }}">Logout</a>
+					</li>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_login') }}">Login</a>
+					</li>
+					{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('mi_cuenta') }}">Mi cuenta</a>
+						</li>
+					{% endif %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('registro') }}">Registrarse</a>
+					</li>
+				{% endif %}
+			</ul>
+		</div>
+	</nav>
+	<div class="container my-5">
+		<div class="row justify-content-center">
+			<div class="col-lg-6">
+				<div class="card shadow-lg border-0 rounded-lg mt-5">
+					<div class="card-header">
+						<h3 class="text-center font-weight-light my-4">Iniciar sesión</h3>
+					</div>
+					<div class="card-body">
+						<form method="post">
+							{% if error %}
+								<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+							{% endif %}
 
-                        {% if app.user %}
-                            <div class="mb-3">
-                                Has iniciado sesión como {{ app.user.username }},
-                                <a href="{{ path('app_logout') }}">Cerrar sesión</a>
-                            </div>
-                        {% endif %}
+							{% if app.user %}
+								<div class="mb-3">
+									Has iniciado sesión como
+									{{ app.user.username }},
+									<a href="{{ path('app_logout') }}">Cerrar sesión</a>
+								</div>
+							{% endif %}
 
-                        <div class="form-floating mb-3">
-                            <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email" autocomplete="email" required autofocus>
-                            <label for="inputEmail">Email</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" autocomplete="current-password" required>
-                            <label for="inputPassword">Password</label>
-                        </div>
+							<div class="form-floating mb-3">
+								<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Email" autocomplete="email" required autofocus>
+								<label for="inputEmail">Email</label>
+							</div>
+							<div class="form-floating mb-3">
+								<input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" autocomplete="current-password" required>
+								<label for="inputPassword">Password</label>
+							</div>
 
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                        <button class="btn btn-primary btn-lg btn-block">Iniciar sesión</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+							<button class="btn btn-primary btn-lg btn-block">Iniciar sesión</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
