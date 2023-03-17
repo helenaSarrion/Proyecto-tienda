@@ -9,3 +9,8 @@ inicio:
 nosotros:
     path: /nosotros
     controller: App\Controller\NosotrosController::nosotros
+
+
+buscar_productos:
+    path: /buscar
+    controller: App\Controller\ProductosController::buscar
