@@ -15,9 +15,17 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path('nosotros') }}">Sobre nosotros</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('productos') }}">Tienda</a>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Tienda
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							{% for categoria in categorias %}
+								<a class="dropdown-item" href="{{ path('productos', {'categoria': categoria.categoria}) }}">{{ categoria.nombre }}</a>
+							{% endfor %}
+						</div>
 					</li>
+
 				</ul>
 				<ul class="navbar-nav">
 					<li class="nav-item">
