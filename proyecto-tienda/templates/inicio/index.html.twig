@@ -18,14 +18,13 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path('productos') }}">Tienda</a>
 					</li>
-					{#dropwdown de categorias#}
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							Categorias
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							{% for categoria in categorias %}
-								<a class="dropdown-item" href="{{ path('productos', {'categoria': categoria.categoria}) }}">{{ categoria.nombre }}</a>
+								<a class="dropdown-item" href="{{ path('productos_por_categoria', {'categoria': categoria.categoria}) }}">{{ categoria.nombre }}</a>
 							{% endfor %}
 						</div>
 					</li>

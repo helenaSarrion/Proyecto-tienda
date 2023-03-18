@@ -9,3 +9,8 @@ inicio:
 nosotros:
     path: /nosotros
     controller: App\Controller\NosotrosController::nosotros
+
+productos_por_categoria:
+    path: '/productos/{categoria}'
+    controller: App\Controller\ProductosController::productosPorCategoria
+    methods: [GET]

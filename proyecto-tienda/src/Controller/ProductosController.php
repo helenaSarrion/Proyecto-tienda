@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Productos;
+use App\Entity\Categorias;
 
 class ProductosController extends AbstractController
 {
@@ -23,6 +24,17 @@ class ProductosController extends AbstractController
 
         return $this->render('productos/index.html.twig', [
             'productos' => $productos,
+        ]);
+    }
+
+    public function productosPorCategoria(Request $request, $categoria)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $productos = $em->getRepository(Productos::class)->findByCategoria($categoria);
+
+        return $this->render('productos/index.html.twig', [
+            'productos' => $productos,
+            'categoria' => $categoria,
         ]);
     }
 
