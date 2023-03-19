@@ -47,7 +47,24 @@
 			</div>
 		</div>
 	</nav>
+
 	<div class="container my-5">
+		<div class="text-left">
+			<form class="form-inline" method="GET" action="{{ path('productos') }}">
+				<div class="form-group">
+					<label for="precio">Filtrar por precio:</label>
+					<select class="form-control" id="precio" name="precio">
+						<option value="">Todos</option>
+						<option value="0-50">Menos de 50€</option>
+						<option value="50-100">50€ - 100€</option>
+						<option value="100-200">100€ - 200€</option>
+						<option value="200+">Más de 200€</option>
+					</select>
+				</div>
+				<button type="submit" class="btn btn-primary">Filtrar</button>
+			</form>
+		</div>
+		<br><br>
 		<div class="row">
 			{% for producto in productos %}
 				<div class="col-md-3">
@@ -63,6 +80,7 @@
 				</div>
 			{% endfor %}
 		</div>
+
 	</div>
 
 	<hr>
