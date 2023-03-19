@@ -18,4 +18,3 @@ productos_por_categoria:
 productos_por_precio:
   path: '/productos/precio/{min}/{max}'
   controller: 'App\Controller\ProductosController::productosPorPrecio'
-

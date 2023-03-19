@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Compra;
+use Doctrine\ORM\EntityManagerInterface;
 
 
 class CarritoController extends AbstractController
@@ -91,5 +93,4 @@ class CarritoController extends AbstractController
 
         return $this->redirectToRoute('carrito');
     }
-
 }
