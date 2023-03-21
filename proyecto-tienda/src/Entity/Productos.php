@@ -55,6 +55,7 @@ class Productos
      * @ORM\Column(name="Precio", type="integer", nullable=false)
      */
     private $precio;
+    
 
     public function getCodprod(): ?int
     {
@@ -138,6 +139,24 @@ class Productos
 
         return $this;
     }
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $fecha_creacion;
+
+    public function getFechaCreacion(): ?\DateTimeInterface
+    {
+        return $this->fecha_creacion;
+    }
+
+    public function setFechaCreacion(\DateTimeInterface $fecha_creacion): self
+    {
+        $this->fecha_creacion = $fecha_creacion;
+
+        return $this;
+    }
+
 
 
 }

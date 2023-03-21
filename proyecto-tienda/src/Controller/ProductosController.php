@@ -27,6 +27,9 @@ class ProductosController extends AbstractController
         $precio = $request->query->get('precio');
         if ($precio) {
             switch ($precio) {
+                case 'todos':
+                    $queryBuilder->andWhere('p.precio > 0');
+                    break;
                 case '0-50':
                     $queryBuilder->andWhere('p.precio <= 50');
                     break;
