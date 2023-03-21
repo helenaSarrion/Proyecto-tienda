@@ -7,8 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use App\Entity\Compra;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Categorias;
 
 
 class CarritoController extends AbstractController
@@ -20,10 +19,14 @@ class CarritoController extends AbstractController
     {
         $carrito = $session->get('carrito', []);
         $productos = $this->getDoctrine()->getRepository(Productos::class)->findBy(['codprod' => array_keys($carrito)]);
+        $categorias = $this->getDoctrine()
+        ->getRepository(Categorias::class)
+        ->findAll();
 
         return $this->render('carrito/index.html.twig', [
             'productos' => $productos,
             'carrito' => $carrito,
+            'categorias' => $categorias,
         ]);
     }
 

@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Categorias;
 
 class ProductosController extends AbstractController
 {
@@ -18,6 +19,9 @@ class ProductosController extends AbstractController
     {
         $repository = $entityManager->getRepository(Productos::class);
         $queryBuilder = $repository->createQueryBuilder('p');
+        $categorias = $this->getDoctrine()
+        ->getRepository(Categorias::class)
+        ->findAll();
 
         // Obtener los productos filtrados por precio
         $precio = $request->query->get('precio');
@@ -43,9 +47,9 @@ class ProductosController extends AbstractController
 
         return $this->render('productos/index.html.twig', [
             'productos' => $productos,
+            'categorias' => $categorias,
         ]);
     }
-
 
 
     public function productosPorCategoria(Request $request, $categoria)
@@ -71,5 +75,4 @@ class ProductosController extends AbstractController
             ->getQuery()
             ->getResult();
     }
-
 }

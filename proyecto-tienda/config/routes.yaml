@@ -11,10 +11,10 @@ nosotros:
     controller: App\Controller\NosotrosController::nosotros
 
 productos_por_categoria:
-    path: '/productos/{categoria}'
+    path: /productos/{categoria}
     controller: App\Controller\ProductosController::productosPorCategoria
     methods: [GET]
 
 productos_por_precio:
-  path: '/productos/precio/{min}/{max}'
-  controller: 'App\Controller\ProductosController::productosPorPrecio'
+  path: /productos/precio/{min}/{max}
+  controller: App\Controller\ProductosController::productosPorPrecio
