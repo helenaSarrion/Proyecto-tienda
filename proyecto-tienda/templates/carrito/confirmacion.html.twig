@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Confirmación de compra
+{% endblock %}
+
 {% block body %}
 	<style>
 		body {
@@ -51,69 +54,19 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path('productos') }}">Tienda</a>
 					</li>
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Categorias
-						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							{% for categoria in categorias %}
-								<a class="dropdown-item" href="{{ path('productos_por_categoria', {'categoria': categoria.categoria}) }}">{{ categoria.nombre }}</a>
-							{% endfor %}
-						</div>
-					</li>
 				</ul>
 			</div>
 		</div>
 	</nav>
-	<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-		<ol class="carousel-indicators">
-			<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-			<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-			<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-		</ol>
-		<div class="carousel-inner">
-			<div
-				class="carousel-item active">
-				{#aqui se van a mostrar las imagenes de las ofertas de la semana#}
-				<img class="d-block w-100" src="https://banco-imagenes-helen.s3.eu-north-1.amazonaws.com/header.png" alt="First slide" width="200" height="400">
-			</div>
-			<div
-				class="carousel-item">
-				{#aqui se van a mostrar las imagenes de las ofertas de la semana#}
-				<img class="d-block w-100" src="https://banco-imagenes-helen.s3.eu-north-1.amazonaws.com/header.png" alt="Second slide" width="200" height="400">
-			</div>
-			<div
-				class="carousel-item">
-				{#aqui se van a mostrar las imagenes de las ofertas de la semana#}
-				<img class="d-block w-100" src="https://banco-imagenes-helen.s3.eu-north-1.amazonaws.com/header.png" alt="Third slide" width="200" height="400">
-			</div>
-		</div>
-		<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			<span class="sr-only">Previous</span>
-		</a>
-		<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-			<span class="carousel-control-next-icon" aria-hidden="true"></span>
-			<span class="sr-only">Next</span>
-		</a>
-	</div>
-	<div class="container mt-4">
+	<div class="container">
 		<div class="row">
 			<div class="col-12">
-				<h2 class="text-center mb-4">Productos más recientes</h2>
+				<h1>¡Gracias por su compra!</h1>
+				<p>Se ha realizado la compra correctamente.</p>
+				<p>En breve recibirá un correo electrónico con los detalles de su compra.</p>
+				<p>Si tiene alguna duda, no dude en contactar con nosotros.</p>
+				<a href="{{ path('inicio') }}" class="btn btn-primary">Volver a la tienda</a>
 			</div>
-			{% for producto in productosRecientes %}
-				<div class="col-md-4">
-					<div class="card mb-4 shadow-sm">
-						<img src="{{ producto.image_link }}" class="card-img-top img-fluid" alt="{{ producto.nombre }}">
-						<div class="card-body">
-							<h4 class="card-title">{{ producto.nombre }}</h4>
-							<p class="card-text">{{ producto.descripcion }}</p>
-							<p class="card-text">{{ producto.precio }}€</p>
-						</div>
-					</div>
-				</div>
-			{% endfor %}
 		</div>
 	</div>
 	<style>
@@ -137,7 +90,7 @@
 						</h6>
 						<p>
 							Bienvenido/a a Fanverse, tu destino en línea para conseguir el mejor merchandising de tus marcas favoritas. 
-																																			Nos enorgullece ofrecer una amplia selección de productos de alta calidad y diseños únicos para satisfacer las necesidades de cualquier fan.
+																																										Nos enorgullece ofrecer una amplia selección de productos de alta calidad y diseños únicos para satisfacer las necesidades de cualquier fan.
 						</p>
 					</div>
 					{#Metodos de pago#}
@@ -192,4 +145,4 @@
 				Todos los derechos reservados</p>
 		</div>
 	</footer>
-</div>{% endblock %}
+{% endblock %}

@@ -57,17 +57,22 @@ class ProductosController extends AbstractController
 
     public function productosPorCategoria(Request $request, $categoria)
     {
+        // Obtener los productos de la categoría seleccionada
         $em = $this->getDoctrine()->getManager();
         $productos = $em->getRepository(Productos::class)->findByCategoria($categoria);
 
+        // Obtener todas las categorías para el menú desplegable
+        $categorias = $em->getRepository(Categorias::class)->findAll();
+
         return $this->render('productos/index.html.twig', [
             'productos' => $productos,
-            'categoria' => $categoria,
+            'categorias' => $categorias,
         ]);
     }
 
     private function findByPrecio($min, $max)
     {
+        // Obtener los productos filtrados por precio (mínimo y máximo)
         return $this->getDoctrine()
             ->getRepository(Productos::class)
             ->createQueryBuilder('p')

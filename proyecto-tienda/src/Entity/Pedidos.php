@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,9 +22,10 @@ class Pedidos
     private $codped;
 
     /**
-     * @var int
+     * @var UserInterface|null
      *
-     * @ORM\Column(name="CodUsu", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(name="CodUsu", referencedColumnName="id")
      */
     private $codusu;
 
@@ -47,17 +48,18 @@ class Pedidos
         return $this->codped;
     }
 
-    public function getCodusu(): ?int
+    public function getCodusu(): ?UserInterface
     {
         return $this->codusu;
     }
 
-    public function setCodusu(int $codusu): self
+    public function setCodusu(?UserInterface $codusu): self
     {
         $this->codusu = $codusu;
 
         return $this;
     }
+    
 
     public function getEnviado(): ?int
     {
@@ -83,5 +85,106 @@ class Pedidos
         return $this;
     }
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $nombre;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $direccion;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $telefono;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $metodoPago;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $total;
+
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre(string $nombre): self
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    public function getDireccion(): ?string
+    {
+        return $this->direccion;
+    }
+
+    public function setDireccion(string $direccion): self
+    {
+        $this->direccion = $direccion;
+
+        return $this;
+    }
+
+    public function getTelefono(): ?string
+    {
+        return $this->telefono;
+    }
+
+    public function setTelefono(string $telefono): self
+    {
+        $this->telefono = $telefono;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getMetodoPago(): ?string
+    {
+        return $this->metodoPago;
+    }
+
+    public function setMetodoPago(string $metodoPago): self
+    {
+        $this->metodoPago = $metodoPago;
+
+        return $this;
+    }
+
+    public function getTotal(): ?float
+    {
+        return $this->total;
+    }
+
+    public function setTotal(float $total): self
+    {
+        $this->total = $total;
+
+        return $this;
+    }
 
 }

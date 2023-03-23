@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Productos;
@@ -8,6 +9,12 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Categorias;
+use App\Entity\Pedidos;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
 class CarritoController extends AbstractController
@@ -20,30 +27,25 @@ class CarritoController extends AbstractController
         $carrito = $session->get('carrito', []);
         $productos = $this->getDoctrine()->getRepository(Productos::class)->findBy(['codprod' => array_keys($carrito)]);
         $categorias = $this->getDoctrine()
-        ->getRepository(Categorias::class)
-        ->findAll();
+            ->getRepository(Categorias::class)
+            ->findAll();
 
-        return $this->render('carrito/index.html.twig', [
-            'productos' => $productos,
-            'carrito' => $carrito,
-            'categorias' => $categorias,
-        ]);
+        return $this->render('carrito/index.html.twig', compact('productos', 'carrito', 'categorias'));
     }
 
     /**
      * @Route("/carrito/agregar/{codprod}", name="agregar_al_carrito")
      */
-    public function agregarAlCarrito($codprod, SessionInterface $session): Response
+    public function agregarAlCarrito($codprod, SessionInterface $session, Request $request): Response
     {
         $carrito = $session->get('carrito', []);
-        if (!isset($carrito[$codprod])) {
-            $carrito[$codprod] = 0;
-        }
-        $carrito[$codprod]++;
+        $carrito[$codprod] = isset($carrito[$codprod]) ? ++$carrito[$codprod] : 1;
         $session->set('carrito', $carrito);
 
-        return $this->redirectToRoute('carrito');
+        // Redirecciona a la página actual
+        return $this->redirect($request->headers->get('referer'));
     }
+
 
     /**
      * @Route("/carrito/quitar/{codprod}", name="quitar_del_carrito")
@@ -80,7 +82,9 @@ class CarritoController extends AbstractController
     {
         $carrito = $session->get('carrito', []);
         $cantidad = (int) $request->request->get('cantidad');
-        $producto = $this->getDoctrine()->getRepository(Productos::class)->find($id);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $producto = $entityManager->getRepository(Productos::class)->find($id);
 
         if (!$producto) {
             throw $this->createNotFoundException('El producto no existe.');
@@ -92,8 +96,80 @@ class CarritoController extends AbstractController
             $carrito[$id] = $cantidad;
             $session->set('carrito', $carrito);
             $this->addFlash('success', 'Cantidad actualizada correctamente.');
+
+            $producto->setStock($producto->getStock() - $cantidad);
+            $entityManager->persist($producto);
+            $entityManager->flush();
         }
 
         return $this->redirectToRoute('carrito');
+    }
+
+
+    /**
+     * @Route("/carrito/pedido", name="realizar_compra")
+     */
+    public function realizarCompra(Request $request, SessionInterface $session, EntityManagerInterface $entityManager): Response
+    {
+        // Obtener los productos del carrito
+        $carrito = $session->get('carrito', []);
+        $productos = $this->getDoctrine()->getRepository(Productos::class)->findBy(['codprod' => array_keys($carrito)]);
+
+        // Mostrar el formulario de datos del usuario y opciones de pago
+        $form = $this->createFormBuilder()
+            ->add('nombre', TextType::class, ['label' => 'Nombre'])
+            ->add('direccion', TextType::class, ['label' => 'Dirección'])
+            ->add('telefono', TextType::class, ['label' => 'Teléfono'])
+            ->add('email', EmailType::class, ['label' => 'Email'])
+            ->add('metodoPago', ChoiceType::class, [
+                'label' => 'Método de pago',
+                'choices' => ['Google Pay' => 'google pay', 'PayPal' => 'paypal', 'Apple Pay' => 'apple pay'],
+            ])
+            ->add('confirmar', SubmitType::class, ['label' => 'Confirmar compra'])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Obtener los datos del formulario
+            $datos = $form->getData();
+
+            // Calcular el total de la compra
+            $total = 0;
+            foreach ($productos as $producto) {
+                $cantidad = $carrito[$producto->getCodprod()];
+                $producto->setStock($producto->getStock() - $cantidad);
+                $total += $producto->getPrecio() * $cantidad;
+            }
+
+            // Crear el pedido
+            $pedido = new Pedidos();
+            $pedido->setCodusu($this->getUser());
+            $pedido->setNombre($datos['nombre']);
+            $pedido->setDireccion($datos['direccion']);
+            $pedido->setTelefono($datos['telefono']);
+            $pedido->setEmail($datos['email']);
+            $pedido->setMetodoPago($datos['metodoPago']);
+            $pedido->setTotal($total);
+            $pedido->setEnviado(false);
+            $pedido->setFecha(new \DateTime());
+
+            // Guardar el pedido en la base de datos
+            $entityManager->persist($pedido);
+            $entityManager->flush();
+
+            // Limpiar el carrito de la sesión
+            $session->set('carrito', []);
+
+            // Mostrar la confirmación de compra
+            return $this->render('carrito/confirmacion.html.twig');
+        }
+
+        // Mostrar el formulario de datos del usuario y opciones de pago
+        return $this->render('carrito/pedido.html.twig', [
+            'form' => $form->createView(),
+            'productos' => $productos,
+            'carrito' => $carrito,
+        ]);
     }
 }

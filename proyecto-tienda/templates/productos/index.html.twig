@@ -92,7 +92,8 @@
 							<h5 class="card-title">{{ producto.nombre }}</h5>
 							<p class="card-text">{{ producto.precio|number_format(2, ',', '.') }}
 								€</p>
-							<button type="button" class="btn btn-primary">Añadir al carrito</button>
+							<button type="button" class="btn btn-primary" onclick="window.location='{{ path('agregar_al_carrito', {'codprod': producto.codprod}) }}'">Añadir al carrito</button>
+
 						</div>
 					</div>
 				</div>
@@ -123,7 +124,7 @@
 					</h6>
 					<p>
 						Bienvenido/a a Fanverse, tu destino en línea para conseguir el mejor merchandising de tus marcas favoritas. 
-																																		Nos enorgullece ofrecer una amplia selección de productos de alta calidad y diseños únicos para satisfacer las necesidades de cualquier fan.
+																																								Nos enorgullece ofrecer una amplia selección de productos de alta calidad y diseños únicos para satisfacer las necesidades de cualquier fan.
 					</p>
 				</div>
 				{#Metodos de pago#}

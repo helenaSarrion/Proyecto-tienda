@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-md-8">
+				<h1>Realizar Compra</h1>
+				<hr>
+				<form method="post" action="{{ path('realizar_compra') }}" class="needs-validation" novalidate>
+					{{ form_start(form) }}
+					<div class="form-group">
+						{{ form_label(form.nombre) }}
+						{{ form_widget(form.nombre, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+						<div class="invalid-feedback">Por favor ingrese su nombre.</div>
+					</div>
+					<div class="form-group">
+						{{ form_label(form.direccion) }}
+						{{ form_widget(form.direccion, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+						<div class="invalid-feedback">Por favor ingrese su dirección.</div>
+					</div>
+					<div class="form-group">
+						{{ form_label(form.telefono) }}
+						{{ form_widget(form.telefono, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+						<div class="invalid-feedback">Por favor ingrese su número de teléfono.</div>
+					</div>
+					<div class="form-group">
+						{{ form_label(form.email) }}
+						{{ form_widget(form.email, {'attr': {'class': 'form-control', 'required': 'required', 'type': 'email'}}) }}
+						<div class="invalid-feedback">Por favor ingrese un correo electrónico válido.</div>
+					</div>
+					<div class="form-group">
+						{{ form_label(form.metodoPago) }}
+						{{ form_widget(form.metodoPago, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+					</div>
+					{{ form_widget(form.confirmar, {'attr': {'class': 'btn btn-primary'}}) }}
+					{{ form_end(form) }}
+				</form>
+			</div>
+			<div class="col-md-4">
+				<h2>Resumen del Pedido</h2>
+				<hr>
+				<ul class="list-group">
+					{% set total = 0 %}
+					{% for producto in productos %}
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							{{ producto.nombre }}
+							x
+							{{ carrito[producto.codprod] }}
+							{# el set subtotal es para calcular el subtotal de cada producto #}
+							{% set subtotal = producto.precio * carrito[producto.codprod] %}
+							{#{{ variable|currency }} significa que la variable variable se está pasando como argumento al filtro currency #}
+							<span class="badge badge-primary badge-pill">{{ subtotal|currency }}</span>
+						</li>
+						{% set total = total + subtotal %}
+					{% endfor %}
+					<li class="list-group-item d-flex justify-content-between align-items-center font-weight-bold">
+						Total
+						{# este span es para mostrar el total de la compra #}
+						<span class="badge badge-primary badge-pill">{{ total|currency }}</span>
+					</li>
+
+				</ul>
+			</div>
+		</div>
+	</div>
+{% endblock %}
