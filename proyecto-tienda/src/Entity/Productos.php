@@ -55,24 +55,6 @@ class Productos
      * @ORM\Column(name="Precio", type="integer", nullable=false)
      */
     private $precio;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Pedidos", inversedBy="productos")
-     * @ORM\JoinColumn(name="CodPed", referencedColumnName="CodPed")
-     */
-    private $codped;
-
-    public function getCodped(): ?int
-    {
-        return $this->codped;
-    }
-
-    public function setCodped(int $codped): self
-    {
-        $this->codped = $codped;
-
-        return $this;
-    }
     
 
     public function getCodprod(): ?int
