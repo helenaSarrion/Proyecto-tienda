@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Resultados de búsqueda</h1>
+
+        {% if productos|length > 0 %}
+            <div class="row mt-5">
+                {% for producto in productos %}
+                    <div class="col-md-4 mb-5">
+                        <div class="card">
+						<img src="{{ producto.image_link }}" class="card-img-top" alt="{{ producto.nombre }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ producto.nombre }}</h5>
+                                <p class="card-text">{{ producto.descripcion }}</p>
+                                <p class="card-text"><strong>Precio:</strong> ${{ producto.precio }}</p>
+                                <a href="{{ path('producto_detalle', {codprod: producto.codprod}) }}" class="btn btn-primary">Ver detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="mt-5">No se encontraron productos con el nombre "{{ app.request.query.get('nombre') }}"</p>
+        {% endif %}
+    </div>
+{% endblock %}

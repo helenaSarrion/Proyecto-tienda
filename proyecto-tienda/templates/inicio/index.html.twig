@@ -18,7 +18,7 @@
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('carrito') }}">
-						<i class="fas fa-shopping-cart fa-lg"><img src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/512/external-shopping-cart-sales-vitaliy-gorbachev-flat-vitaly-gorbachev.png" alt="carrito" width="30" height="30"></i>
+						<img src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/512/external-shopping-cart-sales-vitaliy-gorbachev-flat-vitaly-gorbachev.png" alt="carrito" width="30" height="30"></i>
 						<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
 					</a>
 				</li>
@@ -61,6 +61,19 @@
 							{% endfor %}
 						</div>
 					</li>
+					<li class="nav-item">
+						<form class="form-inline" action="{{ path('productos_por_nombre') }}" method="get">
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="Buscar" name="nombre">
+								<div class="input-group-append">
+									<button class="btn btn-outline-secondary" type="submit">
+										<i class="fa fa-search"></i>
+									</button>
+								</div>
+							</div>
+						</form>
+					</li>
+
 				</ul>
 			</div>
 		</div>
@@ -137,7 +150,7 @@
 						</h6>
 						<p>
 							Bienvenido/a a Fanverse, tu destino en línea para conseguir el mejor merchandising de tus marcas favoritas. 
-																																			Nos enorgullece ofrecer una amplia selección de productos de alta calidad y diseños únicos para satisfacer las necesidades de cualquier fan.
+																																										Nos enorgullece ofrecer una amplia selección de productos de alta calidad y diseños únicos para satisfacer las necesidades de cualquier fan.
 						</p>
 					</div>
 					{#Metodos de pago#}

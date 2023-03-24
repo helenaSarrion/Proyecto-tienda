@@ -3,12 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Productos;
+use App\Repository\ProductosRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Categorias;
+use Doctrine\ORM\Query;
+use App\RepositoryProductosRepository;
 
 class ProductosController extends AbstractController
 {
@@ -70,19 +73,36 @@ class ProductosController extends AbstractController
         ]);
     }
 
-    private function findByPrecio($min, $max)
+
+    private function productosPorPrecio($min, $max)
     {
-        // Obtener los productos filtrados por precio (mínimo y máximo)
-        return $this->getDoctrine()
-            ->getRepository(Productos::class)
-            ->createQueryBuilder('p')
-            ->andWhere('p.precio >= :min')
+        $em = $this->getDoctrine()->getManager();
+        $queryBuilder = $em->getRepository(Productos::class)->createQueryBuilder('p');
+        $queryBuilder
+            ->where('p.precio >= :min')
             ->andWhere('p.precio <= :max')
             ->setParameter('min', $min)
-            ->setParameter('max', $max)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('max', $max);
+        $query = $queryBuilder->getQuery();
+
+        return $query->getResult();
     }
 
+    public function buscarPorNombre(Request $request)
+    {
+        $nombre = $request->query->get('nombre');
 
+        // Obtener los productos que coincidan con el nombre
+        $em = $this->getDoctrine()->getManager();
+        $productos = $em->getRepository(Productos::class)->createQueryBuilder('p')
+            ->where('p.nombre LIKE :nombre')
+            ->setParameter('nombre', '%' . $nombre . '%')
+            ->getQuery()
+            ->getResult();
+
+        // Renderizar la vista correspondiente con los productos encontrados
+        return $this->render('productos/buscar.html.twig', [
+            'productos' => $productos,
+        ]);
+    }
 }

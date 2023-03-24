@@ -6,7 +6,6 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Productos
- *
  * @ORM\Table(name="productos", indexes={@ORM\Index(name="Categoria", columns={"Categoria"})})
  * @ORM\Entity
  */
