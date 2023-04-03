@@ -23,3 +23,10 @@ productos_por_nombre:
   path: /productos/buscar
   controller: App\Controller\ProductosController::buscarPorNombre
   methods: GET
+
+
+producto:
+  path: /producto/{codprod}
+  controller: App\Controller\ProductosController::show
+
+

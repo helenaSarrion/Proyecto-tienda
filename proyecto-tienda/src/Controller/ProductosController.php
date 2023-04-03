@@ -105,4 +105,15 @@ class ProductosController extends AbstractController
             'productos' => $productos,
         ]);
     }
+
+
+    public function show(Request $request, $codprod): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $producto = $em->getRepository(Productos::class)->find($codprod);
+
+        return $this->render('productos/detalles.html.twig', [
+            'producto' => $producto,
+        ]);
+    }
 }

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block head %}
+	<meta property="og:title" content="{{ producto.nombre }}"/>
+	<meta property="og:description" content="{{ producto.descripcion }}"/>
+{% endblock %}
+
+{% block body %}
+	<div class="container py-5">
+		<div class="row">
+			<div class="col-md-6">
+				<img src="{{ producto.image_link }}" class="img-fluid rounded mb-4" alt="{{ producto.nombre }}">
+			</div>
+			<div class="col-md-6">
+				<h1 class="mb-4">{{ producto.nombre }}</h1>
+				<p class="text-muted mb-4">{{ producto.descripcion }}</p>
+				<p class="h4 mb-4">{{ producto.precio }}€</p>
+				<p class="text-muted mb-4">Disponibilidad:
+					{{ producto.stock }}</p>
+				<p class="text-muted mb-4">Tiempo de envío: 48h</p>
+				<form method="post" action="{{ path('agregar_al_carrito', {'codprod': producto.codprod}) }}">
+					<input type="number" name="cantidad" class="form-control mb-3" placeholder="Cantidad" min="1" value="1" required>
+					<button type="submit" class="btn btn-primary btn-block">Añadir al carrito</button>
+				</form>
+			</div>
+			<div class="my-5">
+				<h2>Compartir en redes sociales:</h2>
+				<div class="d-flex align-items-center justify-content-center">
+					<a href="https://www.facebook.com/sharer/sharer.php?u={{ path('producto', {'codprod': producto.codprod}) }}&title={{ producto.nombre }}" target="_blank" class="btn btn-primary mx-2">
+						<i class="fab fa-facebook fa-2x"></i>
+					</a>
+					<a href="https://twitter.com/intent/tweet?url={{ path('producto', {'codprod': producto.codprod}) }}&text={{ producto.nombre }}" target="_blank" class="btn btn-primary mx-2">
+						<i class="fab fa-twitter fa-2x"></i>
+					</a>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+{% endblock %}
