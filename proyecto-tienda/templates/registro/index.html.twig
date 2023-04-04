@@ -22,151 +22,68 @@
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('carrito') }}">
 						<img src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/512/external-shopping-cart-sales-vitaliy-gorbachev-flat-vitaly-gorbachev.png" alt="carrito" width="30" height="30"></i>
-						<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
-					</a>
+					<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
 				</li>
-				{% if app.user %}
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('logout') }}">Logout</a>
-					</li>
-				{% else %}
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('app_login') }}">Login</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('registro') }}">Registrarse</a>
-					</li>
-				{% endif %}
-			</ul>
-		</div>
-	</nav>
-	<nav class="navbar navbar-expand-lg navbar-light bg-transparent">
-		<div class="container">
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav mx-auto text-center w-100 justify-content-center">
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('inicio') }}">Inicio</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('nosotros') }}">Sobre nosotros</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('productos') }}">Tienda</a>
-					</li>
-				</ul>
+			</a>
+		</li>
+		{% if app.user %}
+			<li class="nav-item">
+				<a class="nav-link" href="{{ path('logout') }}">Logout</a>
+			</li>
+		{% else %}
+			<li class="nav-item">
+				<a class="nav-link" href="{{ path('app_login') }}">Login</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{{ path('registro') }}">Registrarse</a>
+			</li>
+		{% endif %}
+	</ul>
+</div></nav><nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+<div class="container">
+	<div class="collapse navbar-collapse" id="navbarNav">
+		<ul class="navbar-nav mx-auto text-center w-100 justify-content-center">
+			<li class="nav-item">
+				<a class="nav-link" href="{{ path('inicio') }}">Inicio</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{{ path('nosotros') }}">Sobre nosotros</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{{ path('productos') }}">Tienda</a>
+			</li>
+		</ul>
+	</div>
+</div></nav><div class="container my-5">
+<div class="row justify-content-center">
+	<div class="col-md-6">
+		<div class="card shadow-lg border-0 rounded-lg">
+			<div class="card-header">
+				<h3 class="text-center font-weight-light my-4">Registro</h3>
 			</div>
-		</div>
-	</nav>
-
-	<div class="container my-5">
-		<div class="row justify-content-center">
-			<div class="col-md-6">
-				<div class="card shadow-lg border-0 rounded-lg">
-					<div class="card-header">
-						<h3 class="text-center font-weight-light my-4">Registro</h3>
+			<div class="card-body">
+				<form method="post" action="{{ path('registro') }}">
+					<div class="mb-3">
+						<label for="nombre" class="form-label">Nombre</label>
+						<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Introduce tu nombre" required>
 					</div>
-					<div class="card-body">
-						<form method="post" action="{{ path('registro') }}">
-							<div class="mb-3">
-								<label for="nombre" class="form-label">Nombre</label>
-								<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Introduce tu nombre" required>
-							</div>
-							<div class="mb-3">
-								<label for="email" class="form-label">Email</label>
-								<input type="email" class="form-control" id="email" name="email" placeholder="Introduce tu email" required>
-							</div>
-							<div class="mb-3">
-								<label for="password" class="form-label">Contraseña</label>
-								<input type="password" class="form-control" id="password" name="password" placeholder="Introduce tu contraseña" required>
-							</div>
-							<div class="mb-3">
-								<label for="password_confirmation" class="form-label">Confirmar contraseña</label>
-								<input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Introduce nuevamente tu contraseña" required>
-							</div>
-							<div class="d-grid">
-								<button type="submit" class="btn btn-secondary btn-block mt-4">Registrarse</button>
-							</div>
-						</form>
+					<div class="mb-3">
+						<label for="email" class="form-label">Email</label>
+						<input type="email" class="form-control" id="email" name="email" placeholder="Introduce tu email" required>
 					</div>
-				</div>
+					<div class="mb-3">
+						<label for="password" class="form-label">Contraseña</label>
+						<input type="password" class="form-control" id="password" name="password" placeholder="Introduce tu contraseña" required>
+					</div>
+					<div class="mb-3">
+						<label for="password_confirmation" class="form-label">Confirmar contraseña</label>
+						<input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Introduce nuevamente tu contraseña" required>
+					</div>
+					<div class="d-grid">
+						<button type="submit" class="btn btn-secondary btn-block mt-4">Registrarse</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
-	<hr>
-	<style>
-		.card-img-top {
-			width: 200px;
-			height: 200px;
-			margin: 0 auto;
-			display: block;
-		}
-	</style>
-	<hr>
-	<footer class="text-center text-lg-start bg-white text-muted">
-		<section class="">
-			<div class="container text-center text-md-start mt-5">
-				<div class="row mt-3">
-					<div
-						class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-						{#Sobre nosotros#}
-						<h6 class="text-uppercase fw-bold mb-4">
-							<i class="fas fa-gem me-3 text-secondary"></i>Fanverse
-						</h6>
-						<p>
-							Bienvenido/a a Fanverse, tu destino en línea para conseguir el mejor merchandising de tus marcas favoritas. 
-																																			Nos enorgullece ofrecer una amplia selección de productos de alta calidad y diseños únicos para satisfacer las necesidades de cualquier fan.
-						</p>
-					</div>
-					{#Metodos de pago#}
-					<div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-						<h6 class="text-uppercase fw-bold mb-4">
-							Métodos de pago
-						</h6>
-						<p>
-							<img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" alt="PayPal" width="100" height="26">
-						</p>
-						<p>
-							<img src="https://pay.google.com/about/static/images/logos/google-pay-logo.svg" alt="Google Pay" width="100" height="26">
-						</p>
-						<p>
-							<img src="https://developer.apple.com/design/human-interface-guidelines/apple-pay/images/apple-pay-logo.png" alt="Apple Pay" width="100" height="26">
-						</p>
-					</div>
-					{#Redes sociales#}
-					<div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-						<h6 class="text-uppercase fw-bold mb-4">
-							Redes sociales
-						</h6>
-						<p>
-							<a href="www.twitter.com" class="text-reset"><img src="https://img.icons8.com/color/512/twitter.png" alt="twitter" width="30" height="30"></a>
-							<a href="www.facebook.com" class="text-reset"><img src="https://img.icons8.com/color/512/facebook-new.png" alt="facebook" width="30" height="30"></a>
-							<a href="www.instagram.com" class="text-reset"><img src="https://img.icons8.com/fluency/512/instagram-new.png" alt="instagram" width="30" height="30"></a>
-							<a href="www.tiktok.com" class="text-reset"><img src="https://img.icons8.com/color/512/tiktok--v2.png" alt="tiktok" width="30" height="30"></a>
-						</p>
-					</div>
-					{#Contacto#}
-					<div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-						<h6 class="text-uppercase fw-bold mb-4">Contacto</h6>
-						<p>
-							<i class="fas fa-home me-3 text-secondary"></i>Av. de la Constitución, 1, 28071 Madrid
-						</p>
-						<p>
-							<i class="fas fa-envelope me-3 text-secondary"></i>
-							fanverse@fanverse.com
-						</p>
-						<p>
-							<i class="fas fa-phone me-3 text-secondary"></i>
-							+34 123 456 789
-						</p>
-					</div>
-				</div>
-			</div>
-		</section>
-		{#Copyrigth#}
-		<div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.025);">
-			<p>&copy;
-				{{ "now"|date("Y") }}
-				Todos los derechos reservados</p>
-		</div>
-	</footer>
-</div>{% endblock %}
+</div></div><hr>{% endblock %}

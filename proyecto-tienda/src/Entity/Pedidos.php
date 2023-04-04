@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Entity;
+
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -59,7 +60,7 @@ class Pedidos
 
         return $this;
     }
-    
+
 
     public function getEnviado(): ?int
     {
@@ -186,5 +187,41 @@ class Pedidos
 
         return $this;
     }
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $nombreProd;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $codProd;
+
+
+    public function getNombreProd(): ?string
+    {
+        return $this->nombreProd;
+    }
+
+    public function setNombreProd(?string $nombreProd): self
+    {
+        $this->nombreProd = $nombreProd;
+
+        return $this;
+    }
+
+    public function getCodProd(): ?string
+    {
+        return $this->codProd;
+    }
+
+    public function setCodProd(?string $codProd): self
+    {
+        $this->codProd = $codProd;
+
+        return $this;
+    }
+
 
 }

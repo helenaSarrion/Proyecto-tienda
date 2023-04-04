@@ -134,13 +134,23 @@ class CarritoController extends AbstractController
             // Obtener los datos del formulario
             $datos = $form->getData();
 
-            // Calcular el total de la compra
+            // Crear un array para almacenar los nombres y códigos de todos los productos
+            $nombreProductos = [];
+            $codProductos = [];
+
+            // Calcular el total de la compra y almacenar los nombres y códigos de todos los productos
             $total = 0;
             foreach ($productos as $producto) {
                 $cantidad = $carrito[$producto->getCodprod()];
                 $producto->setStock($producto->getStock() - $cantidad);
                 $total += $producto->getPrecio() * $cantidad;
+                $nombreProductos[] = $producto->getNombre();
+                $codProductos[] = $producto->getCodprod();
             }
+
+            // Convertir el array de nombres y códigos de productos en una cadena separada por comas
+            $nombreProd = implode(',', $nombreProductos);
+            $codProd = implode(',', $codProductos);
 
             // Crear el pedido
             $pedido = new Pedidos();
@@ -153,7 +163,8 @@ class CarritoController extends AbstractController
             $pedido->setTotal($total);
             $pedido->setEnviado(false);
             $pedido->setFecha(new \DateTime());
-
+            $pedido->setNombreProd($nombreProd);
+            $pedido->setCodProd($codProd);
             // Guardar el pedido en la base de datos
             $entityManager->persist($pedido);
             $entityManager->flush();
