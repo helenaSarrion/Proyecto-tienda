@@ -24,9 +24,11 @@ productos_por_nombre:
   controller: App\Controller\ProductosController::buscarPorNombre
   methods: GET
 
-
 producto:
   path: /producto/{codprod}
   controller: App\Controller\ProductosController::show
 
+perfil_usuario:
+    path: /perfil
+    controller: App\Controller\UsuarioController::verPerfil
 

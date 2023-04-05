@@ -88,10 +88,10 @@ class ProductosController extends AbstractController
         return $query->getResult();
     }
 
+    
     public function buscarPorNombre(Request $request)
     {
         $nombre = $request->query->get('nombre');
-
         // Obtener los productos que coincidan con el nombre
         $em = $this->getDoctrine()->getManager();
         $productos = $em->getRepository(Productos::class)->createQueryBuilder('p')
@@ -104,6 +104,8 @@ class ProductosController extends AbstractController
         return $this->render('productos/buscar.html.twig', [
             'productos' => $productos,
         ]);
+
+
     }
 
 
