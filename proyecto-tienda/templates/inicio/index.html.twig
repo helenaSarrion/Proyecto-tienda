@@ -29,7 +29,7 @@
 
 				{% if app.user %}
 					<li class="nav-item">
-						<a class="nav-link">{{ app.user.nombre }}</a>
+						<a class="nav-link" href="{{ path('verPerfil') }}">{{ app.user.nombre }}</a>
 					</li>
 
 					<li class="nav-item">
@@ -126,7 +126,7 @@
 			{% for producto in productosRecientes %}
 				<div class="col">
 					<div class="card h-100">
-						<img src="{{ producto.image_link }}" class="card-img-top" alt="{{ producto.nombre }}">
+						<img src="{{ producto.image_link }}" class="card-img-top w-100 h-auto" alt="{{ producto.nombre }}">
 						<div class="card-body">
 							<h5 class="card-title">{{ producto.nombre }}</h5>
 							<p class="card-text">{{ producto.descripcion }}</p>
@@ -137,11 +137,11 @@
 				</div>
 			{% endfor %}
 		</div>
-
-		<style>
-			.btn-pink {
-				background-color: #ff8ba7;
-			}
-		</style>
 	</div>
-{% endblock %}
+
+	<style>
+		.btn-pink {
+			background-color: #ff8ba7;
+		}
+	</style>
+</div>{% endblock %}

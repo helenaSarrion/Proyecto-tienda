@@ -30,5 +30,5 @@ producto:
 
 perfil_usuario:
     path: /perfil
-    controller: App\Controller\UsuarioController::verPerfil
+    controller: App\Controller\UserController::verPerfil
 
