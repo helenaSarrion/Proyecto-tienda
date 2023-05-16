@@ -115,17 +115,6 @@
 					</p>
 				{% endif %}
 
-				{% if producto.categoria == 3 %}
-					<p class="text-muted mb-4">Talla:
-						<select class="form-select" name="talla" id="talla">
-							<option value="S">S</option>
-							<option value="M">M</option>
-							<option value="L">L</option>
-							<option value="XL">XL</option>
-						</select>
-					</p>
-				{% endif %}
-
 				<p class="text-muted mb-4">Tiempo de envío: 48h</p>
 				<form method="post" action="{{ path('agregar_al_carrito', {'codprod': producto.codprod}) }}">
 					<input type="number" name="cantidad" class="form-control mb-3" placeholder="Cantidad" min="1" value="1" required>
