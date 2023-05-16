@@ -55,6 +55,42 @@ class Productos
      */
     private $precio;
     
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $tamano;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $talla;
+
+    // ...
+
+    public function getTamano(): ?string
+    {
+        return $this->tamano;
+    }
+
+    public function setTamano(?string $tamano): self
+    {
+        $this->tamano = $tamano;
+
+        return $this;
+    }
+
+    public function getTalla(): ?string
+    {
+        return $this->talla;
+    }
+
+    public function setTalla(?string $talla): self
+    {
+        $this->talla = $talla;
+
+        return $this;
+    }
+    
 
     public function getCodprod(): ?int
     {

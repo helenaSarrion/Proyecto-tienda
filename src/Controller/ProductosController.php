@@ -88,7 +88,7 @@ class ProductosController extends AbstractController
         return $query->getResult();
     }
 
-    
+
     public function buscarPorNombre(Request $request)
     {
         $nombre = $request->query->get('nombre');
@@ -114,8 +114,14 @@ class ProductosController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $producto = $em->getRepository(Productos::class)->find($codprod);
 
+        $tamano = $producto->getTamano();
+        $talla = $producto->getTalla();
+
         return $this->render('productos/detalles.html.twig', [
             'producto' => $producto,
+            'tamano' => $tamano,
+            'talla' => $talla,
         ]);
     }
+
 }

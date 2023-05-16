@@ -91,8 +91,41 @@
 				<h1 class="mb-4">{{ producto.nombre }}</h1>
 				<p class="text-muted mb-4">{{ producto.descripcion }}</p>
 				<p class="h4 mb-4">{{ producto.precio }}€</p>
-				<p class="text-muted mb-4">Disponibilidad:
-					{{ producto.stock }}</p>
+				{#TALLAS Y TAMAÑOS#}
+				{% if producto.categoria == 2 %}
+					<p class="text-muted mb-4">Tamaño:
+						<select class="form-select" name="tamano" id="tamano">
+							<option value="8.5” x 11”">8.5 x 11</option>
+							<option value="11” x 14”">11 x 14</option>
+							<option value="12” x 18”">12 x 18</option>
+							<option value="18” x 24">18 x 24</option>
+							<option value="30” x 36">30 x 36</option>
+						</select>
+					</p>
+				{% endif %}
+
+				{% if producto.categoria == 3 %}
+					<p class="text-muted mb-4">Talla:
+						<select class="form-select" name="talla" id="talla">
+							<option value="S">S</option>
+							<option value="M">M</option>
+							<option value="L">L</option>
+							<option value="XL">XL</option>
+						</select>
+					</p>
+				{% endif %}
+
+				{% if producto.categoria == 3 %}
+					<p class="text-muted mb-4">Talla:
+						<select class="form-select" name="talla" id="talla">
+							<option value="S">S</option>
+							<option value="M">M</option>
+							<option value="L">L</option>
+							<option value="XL">XL</option>
+						</select>
+					</p>
+				{% endif %}
+
 				<p class="text-muted mb-4">Tiempo de envío: 48h</p>
 				<form method="post" action="{{ path('agregar_al_carrito', {'codprod': producto.codprod}) }}">
 					<input type="number" name="cantidad" class="form-control mb-3" placeholder="Cantidad" min="1" value="1" required>
