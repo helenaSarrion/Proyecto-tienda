@@ -89,39 +89,25 @@ class ProductosController extends AbstractController
     }
 
 
-    public function buscarPorNombre(Request $request)
-    {
-        $nombre = $request->query->get('nombre');
-        // Obtener los productos que coincidan con el nombre
-        $em = $this->getDoctrine()->getManager();
-        $productos = $em->getRepository(Productos::class)->createQueryBuilder('p')
-            ->where('p.nombre LIKE :nombre')
-            ->setParameter('nombre', '%' . $nombre . '%')
-            ->getQuery()
-            ->getResult();
-
-        // Renderizar la vista correspondiente con los productos encontrados
-        return $this->render('productos/buscar.html.twig', [
-            'productos' => $productos,
-        ]);
-
-
-    }
-
 
     public function show(Request $request, $codprod): Response
-    {
-        $em = $this->getDoctrine()->getManager();
-        $producto = $em->getRepository(Productos::class)->find($codprod);
+{
+    $em = $this->getDoctrine()->getManager();
+    $producto = $em->getRepository(Productos::class)->find($codprod);
 
-        $tamano = $producto->getTamano();
-        $talla = $producto->getTalla();
+    $tamano = $producto->getTamano();
+    $talla = $producto->getTalla();
 
-        return $this->render('productos/detalles.html.twig', [
-            'producto' => $producto,
-            'tamano' => $tamano,
-            'talla' => $talla,
-        ]);
-    }
+    // Obtener las imágenes adicionales del producto y convertirlas a un array
+    $additionalImages = explode(',', $producto->getAdditionalImages());
+
+    return $this->render('productos/detalles.html.twig', [
+        'producto' => $producto,
+        'tamano' => $tamano,
+        'talla' => $talla,
+        'additionalImages' => $additionalImages,
+    ]);
+}
+
 
 }

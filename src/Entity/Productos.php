@@ -65,7 +65,23 @@ class Productos
      */
     private $talla;
 
-    // ...
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    public $additionalImages;
+
+    public function getAdditionalImages(): ?string
+    {
+        return $this->additionalImages;
+    }
+
+    public function setAdditionalImages(string $additionalImages): self
+    {
+        $this->additionalImages = $additionalImages;
+
+        return $this;
+    }
+
 
     public function getTamano(): ?string
     {

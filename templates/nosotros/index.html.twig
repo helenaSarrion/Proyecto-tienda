@@ -9,49 +9,15 @@
 			text-transform: uppercase;
 		}
 	</style>
-	<nav class="navbar navbar-expand-lg navbar-light bg-transparent">
-		<div class="collapse navbar-collapse" id="navbarNav">
-			<a class="navbar-brand mx-auto text-center" href="{{ path('inicio') }}">
-				<h1 style="font-family: 'Poppins', sans-serif; font-size: 5rem; font-weight: bold; text-transform: uppercase;">FanVerse</h1>
-			</a>
-		</div>
-	</nav>
-	<nav class="navbar navbar-expand-lg navbar-light bg-transparent">
-		<div class="container">
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('carrito') }}">
-						<img src="https://img.icons8.com/external-vitaliy-gorbachev-flat-vitaly-gorbachev/512/external-shopping-cart-sales-vitaliy-gorbachev-flat-vitaly-gorbachev.png" alt="carrito" width="30" height="30">
-						<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
-					</a>
-				</li>
 
-				{% if app.user %}
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('verPerfil') }}">{{ app.user.nombre }}</a>
-					</li>
-
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('logout') }}">Logout</a>
-					</li>
-				{% else %}
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('app_login') }}">Login</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('registro') }}">Registrarse</a>
-					</li>
-				{% endif %}
-			</ul>
-		</div>
-	</nav>
-	<nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+	<nav class="navbar navbar-expand-lg navbar-light bg-transparent ">
+		<a class="navbar-brand" href="{{ path('inicio') }}">FANVERSE</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 		<div class="container">
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
 			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav mx-auto text-center w-100 justify-content-center">
+				<ul class="navbar-nav mx-auto text-center w-100 justify-content-center align-items-center">
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path('inicio') }}">Inicio</a>
 					</li>
@@ -61,18 +27,26 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{{ path('productos') }}">Tienda</a>
 					</li>
-					<li class="nav-item">
-						<form class="form-inline my-2 my-lg-0" action="{{ path('productos_por_nombre') }}" method="get">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Buscar" name="nombre">
-								<div class="input-group-append">
-									<button class="btn btn-outline-secondary" type="submit" style="background-color: #ff8ba7;">
-										<i class="fa fa-search"></i>
-									</button>
-								</div>
-							</div>
-						</form>
-					</li>
+				</ul>
+			</div>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('verPerfil') }}">{{ app.user.nombre }}</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('logout') }}">Logout</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('app_login') }}">Login</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('registro') }}">Registrarse</a>
+						</li>
+					{% endif %}
 				</ul>
 			</div>
 		</div>
