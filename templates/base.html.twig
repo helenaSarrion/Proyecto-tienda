@@ -14,7 +14,8 @@
 	<body>
 		<style>
 			body {
-				background: #faeee7;
+				background-size: cover;
+				background-image: url("https://banco-imagenes-helen.s3.eu-north-1.amazonaws.com/fondo.jpg");
 			}
 		</style>
 		{% block javascripts %}
@@ -34,21 +35,27 @@
 				margin: 0 auto;
 				display: block;
 			}
+			.text-center {
+				color: black;
+				font-weight: bold;
+			}
+			.text-uppercase {
+				color: black;
+				font-weight: bold;
+			}
 		</style>
 		<hr>
 		<footer class="text-center text-lg-start text-muted">
 			<section class="">
 				<div class="container text-center text-md-start mt-5">
 					<div class="row mt-3">
-						<div
-							class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-							{#Sobre nosotros#}
+						<div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
 							<h6 class="text-uppercase fw-bold mb-4">
-								<i class="fas fa-gem me-3 text-secondary"></i>Fanverse
+								Sobre nosotros
 							</h6>
 							<p>
 								Bienvenido/a a Fanverse, tu destino en línea para conseguir el mejor merchandising de tus marcas favoritas. 
-																																																																								Nos enorgullece ofrecer una amplia selección de productos de alta calidad y diseños únicos para satisfacer las necesidades de cualquier fan.
+																																																																																																																Nos enorgullece ofrecer una amplia selección de productos de alta calidad y diseños únicos para satisfacer las necesidades de cualquier fan.
 							</p>
 						</div>
 						{#Metodos de pago#}
@@ -63,7 +70,7 @@
 								<img src="https://pay.google.com/about/static/images/logos/google-pay-logo.svg" alt="Google Pay" width="100" height="26">
 							</p>
 							<p>
-								<img src="https://developer.apple.com/design/human-interface-guidelines/apple-pay/images/apple-pay-logo.png" alt="Apple Pay" width="100" height="26">
+								<i class="fab fa-apple-pay fa-3x" alt="Apple Pay"></i>
 							</p>
 						</div>
 						{#Redes sociales#}
@@ -95,7 +102,9 @@
 						</div>
 					</div>
 				</div>
-			</section>{#Copyrigth#}<div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.025);">
+			</section>
+			{#Copyrigth#}
+			<div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
 				<p>&copy;
 					{{ "now"|date("Y") }}
 					Todos los derechos reservados</p>
