@@ -12,6 +12,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Categorias;
 use Doctrine\ORM\Query;
 use App\RepositoryProductosRepository;
+use App\Entity\Pedidos;
+use App\Entity\Tallas;
+use App\Entity\Tamanos;
 
 class ProductosController extends AbstractController
 {
@@ -88,34 +91,26 @@ class ProductosController extends AbstractController
         return $query->getResult();
     }
 
-    
-    public function buscarPorNombre(Request $request)
-    {
-        $nombre = $request->query->get('nombre');
-        // Obtener los productos que coincidan con el nombre
-        $em = $this->getDoctrine()->getManager();
-        $productos = $em->getRepository(Productos::class)->createQueryBuilder('p')
-            ->where('p.nombre LIKE :nombre')
-            ->setParameter('nombre', '%' . $nombre . '%')
-            ->getQuery()
-            ->getResult();
-
-        // Renderizar la vista correspondiente con los productos encontrados
-        return $this->render('productos/buscar.html.twig', [
-            'productos' => $productos,
-        ]);
-
-
-    }
 
 
     public function show(Request $request, $codprod): Response
-    {
-        $em = $this->getDoctrine()->getManager();
-        $producto = $em->getRepository(Productos::class)->find($codprod);
+{
+    $em = $this->getDoctrine()->getManager();
+    $producto = $em->getRepository(Productos::class)->find($codprod);
 
-        return $this->render('productos/detalles.html.twig', [
-            'producto' => $producto,
-        ]);
-    }
+    $tallas = $em->getRepository(Tallas::class)->findAll();
+    $tamanos = $em->getRepository(Tamanos::class)->findAll();
+
+    // Obtener las imágenes adicionales del producto y convertirlas a un array
+    $additionalImages = explode(',', $producto->getAdditionalImages());
+
+    return $this->render('productos/detalles.html.twig', [
+        'producto' => $producto,
+        'tallas' => $tallas,
+        'tamanos' => $tamanos,
+        'additionalImages' => $additionalImages,
+    ]);
+}
+
+
 }

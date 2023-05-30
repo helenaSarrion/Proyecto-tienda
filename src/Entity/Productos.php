@@ -54,8 +54,57 @@ class Productos
      * @ORM\Column(name="Precio", type="integer", nullable=false)
      */
     private $precio;
-    
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    public $additionalImages;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $id_talla;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $id_tamano;
+
+    public function getIdTalla(): ?int
+    {
+        return $this->id_talla;
+    }
+
+    public function setIdTalla(?int $id_talla): self
+    {
+        $this->id_talla = $id_talla;
+
+        return $this;
+    }
+
+    public function getIdTamano(): ?int
+    {
+        return $this->id_tamano;
+    }
+
+    public function setIdTamano(?int $id_tamano): self
+    {
+        $this->id_tamano = $id_tamano;
+
+        return $this;
+    }
+
+    public function getAdditionalImages(): ?string
+    {
+        return $this->additionalImages;
+    }
+
+    public function setAdditionalImages(string $additionalImages): self
+    {
+        $this->additionalImages = $additionalImages;
+
+        return $this;
+    }
     public function getCodprod(): ?int
     {
         return $this->codprod;

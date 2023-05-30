@@ -15,7 +15,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-
+use App\Entity\Tallas;
+use App\Entity\Tamanos;
 
 class CarritoController extends AbstractController
 {
@@ -26,11 +27,17 @@ class CarritoController extends AbstractController
     {
         $carrito = $session->get('carrito', []);
         $productos = $this->getDoctrine()->getRepository(Productos::class)->findBy(['codprod' => array_keys($carrito)]);
-        $categorias = $this->getDoctrine()
-            ->getRepository(Categorias::class)
-            ->findAll();
+        $tallas = $this->getDoctrine()->getRepository(Tallas::class)->findAll();
+        $tamanos = $this->getDoctrine()->getRepository(Tamanos::class)->findAll();
+        $categorias = $this->getDoctrine()->getRepository(Categorias::class)->findAll();
 
-        return $this->render('carrito/index.html.twig', compact('productos', 'carrito', 'categorias'));
+        return $this->render('carrito/index.html.twig', [
+            'productos' => $productos,
+            'carrito' => $carrito,
+            'tallas' => $tallas,
+            'tamanos' => $tamanos,
+            'categorias' => $categorias,
+        ]);
     }
 
     /**
@@ -134,40 +141,42 @@ class CarritoController extends AbstractController
             // Obtener los datos del formulario
             $datos = $form->getData();
 
-            // Crear un array para almacenar los nombres y códigos de todos los productos
+            $total = 0;
             $nombreProductos = [];
             $codProductos = [];
+            $cantidadProductos = [];
 
-            // Calcular el total de la compra y almacenar los nombres y códigos de todos los productos
-            $total = 0;
+            $entityManager = $this->getDoctrine()->getManager();
+
             foreach ($productos as $producto) {
                 $cantidad = $carrito[$producto->getCodprod()];
                 $producto->setStock($producto->getStock() - $cantidad);
                 $total += $producto->getPrecio() * $cantidad;
                 $nombreProductos[] = $producto->getNombre();
                 $codProductos[] = $producto->getCodprod();
+                $cantidadProductos[$producto->getCodprod()] = $cantidad;
+
+                // Crear un nuevo pedido para cada producto
+                $pedido = new Pedidos();
+                $pedido->setCodusu($this->getUser());
+                $pedido->setNombre($datos['nombre']);
+                $pedido->setDireccion($datos['direccion']);
+                $pedido->setTelefono($datos['telefono']);
+                $pedido->setEmail($datos['email']);
+                $pedido->setMetodoPago($datos['metodoPago']);
+                $pedido->setTotal($producto->getPrecio() * $cantidad);
+                $pedido->setEnviado(false);
+                $pedido->setFecha(new \DateTime());
+                $pedido->setNombreProd($producto->getNombre());
+                $pedido->setCodProd($producto->getCodprod());
+                $pedido->setCantidad($cantidad);
+
+                $entityManager->persist($pedido);
             }
 
-            // Convertir el array de nombres y códigos de productos en una cadena separada por comas
-            $nombreProd = implode(',', $nombreProductos);
-            $codProd = implode(',', $codProductos);
-
-            // Crear el pedido
-            $pedido = new Pedidos();
-            $pedido->setCodusu($this->getUser());
-            $pedido->setNombre($datos['nombre']);
-            $pedido->setDireccion($datos['direccion']);
-            $pedido->setTelefono($datos['telefono']);
-            $pedido->setEmail($datos['email']);
-            $pedido->setMetodoPago($datos['metodoPago']);
-            $pedido->setTotal($total);
-            $pedido->setEnviado(false);
-            $pedido->setFecha(new \DateTime());
-            $pedido->setNombreProd($nombreProd);
-            $pedido->setCodProd($codProd);
-            // Guardar el pedido en la base de datos
-            $entityManager->persist($pedido);
+            // Guardar todos los pedidos en la base de datos
             $entityManager->flush();
+
 
             // Limpiar el carrito de la sesión
             $session->set('carrito', []);

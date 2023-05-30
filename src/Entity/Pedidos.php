@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Tamanos;
+use App\Entity\Tallas;
 
 /**
  * Pedidos
@@ -44,6 +46,18 @@ class Pedidos
      */
     private $fecha;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $cantidad;
+
+    public function setCantidad(int $cantidad): self
+    {
+        $this->cantidad = $cantidad;
+
+        return $this;
+    }
     public function getCodped(): ?int
     {
         return $this->codped;
