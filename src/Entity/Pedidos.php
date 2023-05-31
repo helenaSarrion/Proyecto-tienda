@@ -52,6 +52,40 @@ class Pedidos
      */
     private $cantidad;
 
+     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $talla;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $tamano;
+
+
+    public function getTalla(): ?string
+    {
+        return $this->talla;
+    }
+
+    public function setTalla(?string $talla): self
+    {
+        $this->talla = $talla;
+
+        return $this;
+    }
+
+    public function getTamano(): ?string
+    {
+        return $this->tamano;
+    }
+
+    public function setTamano(?string $tamano): self
+    {
+        $this->tamano = $tamano;
+
+        return $this;
+    }
     public function setCantidad(int $cantidad): self
     {
         $this->cantidad = $cantidad;
