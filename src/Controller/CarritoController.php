@@ -171,6 +171,20 @@ class CarritoController extends AbstractController
                 $pedido->setCodProd($producto->getCodprod());
                 $pedido->setCantidad($cantidad);
 
+                if ($producto->getCategoria() == 3) { // Categoría para camisetas
+                    $idTalla = $producto->getIdTalla();
+                    $talla = $entityManager->getRepository(Tallas::class)->find($idTalla);
+                    if ($talla) {
+                        $pedido->setTalla($talla->getNombre());
+                    }
+                } elseif ($producto->getCategoria() == 2) { // Categoría para posters
+                    $idTamano = $producto->getIdTamano();
+                    $tamano = $entityManager->getRepository(Tamanos::class)->find($idTamano);
+                    if ($tamano) {
+                        $pedido->setTamano($tamano->getNombre());
+                    }
+                }
+
                 $entityManager->persist($pedido);
             }
 
