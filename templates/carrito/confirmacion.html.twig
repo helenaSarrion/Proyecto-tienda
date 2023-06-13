@@ -66,6 +66,7 @@
 				</ul>
 			</div>
 
+			{# Dentro del navbar, a la derecha, mostramos el carrito #}
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
@@ -74,6 +75,7 @@
 							<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
 						</a>
 					</li>
+					{# Si el usuario está logueado, mostramos su nombre y el botón de logout. Si no, mostramos los botones de login y registro #}
 					{% if app.user %}
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path('verPerfil') }}">{{ app.user.nombre }}</a>
@@ -99,6 +101,7 @@
 			</div>
 		</div>
 	</nav>
+	{# Mostramos el mensaje de confirmación de compra #}
 	<div class="container" id="texto">
 		<div class="row">
 			<div class="col-12">

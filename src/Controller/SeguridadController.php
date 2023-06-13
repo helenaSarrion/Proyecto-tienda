@@ -9,6 +9,9 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\CambiarContrasenaType;
 
+/**
+ * Esta funcion de seguridad sirve para hacer el login y el logout de la aplicacion y fue generada automaticamente por symfony
+ */
 class SeguridadController extends AbstractController
 {
     /**
@@ -16,10 +19,6 @@ class SeguridadController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
-
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user

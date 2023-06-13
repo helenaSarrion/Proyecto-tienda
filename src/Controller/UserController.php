@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
 use App\Form\UserType;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 
@@ -16,6 +17,7 @@ class UserController extends AbstractController
 {
     /**
      * @Route("/perfil", name="verPerfil")
+     * Funcion en la que el usuario podra ver su perfil con sus datos personales
      */
     public function verPerfil(): Response
     {
@@ -24,34 +26,41 @@ class UserController extends AbstractController
         return $this->render('user/index.html.twig', [
             'nombre' => $usuario->getNombre(),
             'email' => $usuario->getEmail(),
+            'password' => $usuario->getPassword(),
         ]);
     }
+
 
     /**
-     * @Route("/perfil/editar", name="editarPerfil")
-     
-    public function editarPerfil(Request $request, EntityManagerInterface $entityManager): Response
+     * @Route("/cambiar-contrasena", name="cambiar_contrasena", methods={"POST"})
+     * Funcion en la que el usuario podra cambiar su contraseña, para ello tendra que introducir la nueva contraseña dos veces
+     * y si las dos contraseñas coinciden se cambiara la contraseña
+     */
+    public function cambiarContrasena(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
-        $usuario = $this->getUser();
+        $password = $request->request->get('password');
+        $password2 = $request->request->get('password2');
 
-        $form = $this->createForm(UserType::class, $usuario);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($usuario);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('verPerfil');
+        // Validar que las contraseñas coincidan
+        if ($password !== $password2) {
+            $this->addFlash('error', 'Las contraseñas no coinciden');
+            return $this->redirectToRoute('user/index.html.twig');
         }
 
-        return $this->render('user/editar.html.twig', [
-            'form' => $form->createView(),
-            'nombre' => $usuario->getNombre(),
-            'email' => $usuario->getEmail(),
+        // Obtiene el usuario actual
+        $usuario = $this->getUser();
 
-        ]);
+        // Codificar la nueva contraseña
+        $nuevaContrasena = $passwordEncoder->encodePassword($usuario, $password);
+
+        // Actualizar la contraseña del usuario en la base de datos 
+        $usuario->setPassword($nuevaContrasena);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+
+        $this->addFlash('success', 'La contraseña se ha cambiado exitosamente');
+
+        return $this->redirectToRoute('verPerfil');
     }
-    */
 
 }

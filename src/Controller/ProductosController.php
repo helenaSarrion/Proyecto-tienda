@@ -51,7 +51,7 @@ class ProductosController extends AbstractController
             }
         }
 
-        // Obtener los productos
+        // Obtener los productos 
         $productos = $queryBuilder->getQuery()->getResult();
 
         return $this->render('productos/index.html.twig', [
@@ -61,6 +61,9 @@ class ProductosController extends AbstractController
     }
 
 
+    /**
+     * Funcion para mostrar los productos por categoria 
+     */
     public function productosPorCategoria(Request $request, $categoria)
     {
         // Obtener los productos de la categoría seleccionada
@@ -76,41 +79,32 @@ class ProductosController extends AbstractController
         ]);
     }
 
-
-    private function productosPorPrecio($min, $max)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $queryBuilder = $em->getRepository(Productos::class)->createQueryBuilder('p');
-        $queryBuilder
-            ->where('p.precio >= :min')
-            ->andWhere('p.precio <= :max')
-            ->setParameter('min', $min)
-            ->setParameter('max', $max);
-        $query = $queryBuilder->getQuery();
-
-        return $query->getResult();
-    }
-
-
-
+    /**
+     * Funcion que muestra los detalles de un producto 
+     */
     public function show(Request $request, $codprod): Response
-{
-    $em = $this->getDoctrine()->getManager();
-    $producto = $em->getRepository(Productos::class)->find($codprod);
+    {
+        // Obtener el producto seleccionado 
+        $em = $this->getDoctrine()->getManager();
+        $producto = $em->getRepository(Productos::class)->find($codprod); 
 
-    $tallas = $em->getRepository(Tallas::class)->findAll();
-    $tamanos = $em->getRepository(Tamanos::class)->findAll();
 
-    // Obtener las imágenes adicionales del producto y convertirlas a un array
-    $additionalImages = explode(',', $producto->getAdditionalImages());
+        // Obtener todas las tallas y tamaños 
+        $tallas = $em->getRepository(Tallas::class)->findAll();
+        $tamanos = $em->getRepository(Tamanos::class)->findAll();
 
-    return $this->render('productos/detalles.html.twig', [
-        'producto' => $producto,
-        'tallas' => $tallas,
-        'tamanos' => $tamanos,
-        'additionalImages' => $additionalImages,
-    ]);
-}
+        // Obtener las imágenes adicionales del producto
+        $additionalImages = explode(',', $producto->getAdditionalImages());
+
+        // Mostrar la página de detalles del producto
+        return $this->render('productos/detalles.html.twig', [
+            'producto' => $producto,
+            'tallas' => $tallas,
+            'tamanos' => $tamanos,
+            'additionalImages' => $additionalImages,
+
+        ]);
+    }
 
 
 }

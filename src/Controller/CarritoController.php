@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Tallas;
 use App\Entity\Tamanos;
 
+// Controlador para el carrito de la compra 
 class CarritoController extends AbstractController
 {
     /**
@@ -25,12 +26,14 @@ class CarritoController extends AbstractController
      */
     public function index(SessionInterface $session): Response
     {
-        $carrito = $session->get('carrito', []);
-        $productos = $this->getDoctrine()->getRepository(Productos::class)->findBy(['codprod' => array_keys($carrito)]);
-        $tallas = $this->getDoctrine()->getRepository(Tallas::class)->findAll();
-        $tamanos = $this->getDoctrine()->getRepository(Tamanos::class)->findAll();
-        $categorias = $this->getDoctrine()->getRepository(Categorias::class)->findAll();
+        $carrito = $session->get('carrito', []); // Obtener el carrito de la sesión
+        $productos = $this->getDoctrine()->getRepository(Productos::class)->findBy(['codprod' => array_keys($carrito)]); // Obtener los productos del carrito
+        $tallas = $this->getDoctrine()->getRepository(Tallas::class)->findAll(); // Obtener las tallas
+        $tamanos = $this->getDoctrine()->getRepository(Tamanos::class)->findAll(); // Obtener los tamaños
+        $categorias = $this->getDoctrine()->getRepository(Categorias::class)->findAll(); // Obtener las categorías
+        
 
+        // Mostrar la página del carrito de la compra con los productos 
         return $this->render('carrito/index.html.twig', [
             'productos' => $productos,
             'carrito' => $carrito,
@@ -42,20 +45,22 @@ class CarritoController extends AbstractController
 
     /**
      * @Route("/carrito/agregar/{codprod}", name="agregar_al_carrito")
+     * Funcion para agregar productos al carrito de la compra de forma individual 
      */
     public function agregarAlCarrito($codprod, SessionInterface $session, Request $request): Response
     {
-        $carrito = $session->get('carrito', []);
+        $carrito = $session->get('carrito', []);  
         $carrito[$codprod] = isset($carrito[$codprod]) ? ++$carrito[$codprod] : 1;
         $session->set('carrito', $carrito);
 
-        // Redirecciona a la página actual
+        // Redirecciona a la página actual 
         return $this->redirect($request->headers->get('referer'));
     }
 
 
     /**
      * @Route("/carrito/quitar/{codprod}", name="quitar_del_carrito")
+     * Funcion para quitar productos del carrito de la compra
      */
     public function quitarDelCarrito($codprod, SessionInterface $session): Response
     {
@@ -74,6 +79,7 @@ class CarritoController extends AbstractController
 
     /**
      * @Route("/carrito/vaciar", name="vaciar_carrito")
+     * Funcion para vaciar el carrito de la compra
      */
     public function vaciarCarrito(SessionInterface $session): Response
     {
@@ -84,6 +90,8 @@ class CarritoController extends AbstractController
 
     /**
      * @Route("/carrito/actualizar/{id}", name="actualizar_cantidad", methods={"POST"})
+     * Funcion para actualizar la cantidad de productos del carrito de la compra, se añade la cantidad de productos al carrito de la compra
+     * y se resta la cantidad de productos del stock de la base de datos una vez se realiza la compra
      */
     public function actualizarCantidad($id, SessionInterface $session, Request $request): Response
     {
@@ -94,7 +102,7 @@ class CarritoController extends AbstractController
         $producto = $entityManager->getRepository(Productos::class)->find($id);
 
         if (!$producto) {
-            throw $this->createNotFoundException('El producto no existe.');
+            throw $this->createNotFoundException('No existe ese producto.');
         }
 
         if ($cantidad <= 0 || $cantidad > $producto->getStock()) {
@@ -102,7 +110,7 @@ class CarritoController extends AbstractController
         } else {
             $carrito[$id] = $cantidad;
             $session->set('carrito', $carrito);
-            $this->addFlash('success', 'Cantidad actualizada correctamente.');
+            $this->addFlash('success', 'Cantidad actualizada.');
 
             $producto->setStock($producto->getStock() - $cantidad);
             $entityManager->persist($producto);
@@ -135,10 +143,11 @@ class CarritoController extends AbstractController
             ->add('confirmar', SubmitType::class, ['label' => 'Confirmar compra'])
             ->getForm();
 
-        $form->handleRequest($request);
+        $form->handleRequest($request); // Procesa el formulario
 
+        // Si el formulario se ha enviado y es válido se realiza la compra y se muestra la confirmación de compra 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Obtener los datos del formulario
+            // Obtener los datos del formulario 
             $datos = $form->getData();
 
             $total = 0;
@@ -146,8 +155,10 @@ class CarritoController extends AbstractController
             $codProductos = [];
             $cantidadProductos = [];
 
+            // Actualizar el stock de los productos y crear un nuevo pedido para cada producto
             $entityManager = $this->getDoctrine()->getManager();
 
+            // Recorrer los productos del carrito y actualiza el stock de cada producto y crea un nuevo pedido para cada producto 
             foreach ($productos as $producto) {
                 $cantidad = $carrito[$producto->getCodprod()];
                 $producto->setStock($producto->getStock() - $cantidad);
@@ -156,7 +167,7 @@ class CarritoController extends AbstractController
                 $codProductos[] = $producto->getCodprod();
                 $cantidadProductos[$producto->getCodprod()] = $cantidad;
 
-                // Crear un nuevo pedido para cada producto
+                // Crear un nuevo pedido para cada producto 
                 $pedido = new Pedidos();
                 $pedido->setCodusu($this->getUser());
                 $pedido->setNombre($datos['nombre']);
@@ -171,6 +182,7 @@ class CarritoController extends AbstractController
                 $pedido->setCodProd($producto->getCodprod());
                 $pedido->setCantidad($cantidad);
 
+                //Segun la categoria del producto se añade la talla o el tamaño al pedido 
                 if ($producto->getCategoria() == 3) { // Categoría para camisetas
                     $idTalla = $producto->getIdTalla();
                     $talla = $entityManager->getRepository(Tallas::class)->find($idTalla);
@@ -185,24 +197,12 @@ class CarritoController extends AbstractController
                     }
                 }
 
+                // Guardar el pedido en la base de datos
                 $entityManager->persist($pedido);
             }
 
-            if ($producto->getCategoria() == 3) { // Categoría para camisetas
-                $idTalla = $producto->getIdTalla();
-                $talla = $entityManager->getRepository(Tallas::class)->find($idTalla);
-                if ($talla) {
-                    $pedido->setTalla($talla->getNombre());
-                }
-            } elseif ($producto->getCategoria() == 2) { // Categoría para posters
-                $idTamano = $producto->getIdTamano();
-                $tamano = $entityManager->getRepository(Tamanos::class)->find($idTamano);
-                if ($tamano) {
-                    $pedido->setTamano($tamano->getNombre());
-                }
-            }
+            // Guardar los cambios en la base de datos
             $entityManager->flush();
-
 
             // Limpiar el carrito de la sesión
             $session->set('carrito', []);
@@ -218,4 +218,5 @@ class CarritoController extends AbstractController
             'carrito' => $carrito,
         ]);
     }
+
 }

@@ -10,7 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 
-
+// Este formulario se utiliza para crear un nuevo usuario en la base de datos
+//fue creado con el comando: php bin/console make:form UserType 
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)

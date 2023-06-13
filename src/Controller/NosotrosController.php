@@ -10,9 +10,10 @@ use App\Entity\Categorias;
 
 class NosotrosController extends AbstractController
 {
-
     /**
      * @Route("/nosotros", name="nosotros")
+     * Funcion que mostrara la pagina de nosotros de la tienda, donde se mostrara informacion sobre los productos 
+     * que se venden.
      */
     public function nosotros(Request $request): Response
     {

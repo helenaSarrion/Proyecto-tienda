@@ -13,6 +13,7 @@ class InicioController extends AbstractController
 {
     /**
      * @Route("/", name="inicio")
+     * Funcion que mostrara la pagina de inicio de la tienda 
      */
     public function index(EntityManagerInterface $em): Response
     {
@@ -24,7 +25,7 @@ class InicioController extends AbstractController
         return $this->render('inicio/index.html.twig', [
             'controller_name' => 'InicioController',
             'categorias' => $categorias,
-            'productosRecientes' => $productosRecientes,
+            'productosRecientes' => $productosRecientes, // Productos recientes añadidos a la tienda
         ]);
 
     }

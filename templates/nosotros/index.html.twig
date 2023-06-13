@@ -62,6 +62,7 @@
 				</ul>
 			</div>
 
+			{# Dentro del navbar, a la derecha, mostramos el carrito #}
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
@@ -70,6 +71,7 @@
 							<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
 						</a>
 					</li>
+					{# Si el usuario está logueado, mostramos su nombre y el botón de logout. Si no, mostramos los botones de login y registro #}
 					{% if app.user %}
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path('verPerfil') }}">{{ app.user.nombre }}</a>
@@ -95,6 +97,7 @@
 			</div>
 		</div>
 	</nav>
+	{#Descripcion de la pagina, de lo que ofrecemos y contacto#}
 	<div class="container mt-5 mb-5" id="texto">
 		<div class="row">
 			<div class="col-md-12 text-center">
@@ -103,16 +106,16 @@
 		</div>
 		<div class="row">
 			<div class="col-md-8">
-				<p>Somos una tienda de merchandising en línea que se especializa en productos con diseños propios de alta calidad, inspirados en tus bandas, series y películas favoritas.</p>
+				<p>Somos una tienda de merchandising especializada en productos con diseños propios de alta calidad, inspirados en tus grupos musicales, series y películas favoritas.</p>
 
-				<p>Trabajamos con diseñadores talentosos y apasionados por la cultura pop para crear productos únicos y exclusivos que no encontrarás en ningún otro lugar. Desde camisetas hasta pósters, ¡tenemos todo lo que necesitas para expresar tu estilo y personalidad!</p>
+				<p>Podras encontrar desde camisetas hasta pósters, ¡tenemos todo lo que necesitas para expresar tu estilo y personalidad!</p>
 
 				<p>No dudes en seguirnos en nuestras redes sociales para estar al día con nuestras últimas novedades, promociones y lanzamientos de productos:</p>
 			</div>
 			<div class="col-md-4">
 				<h4>Contacto</h4>
 				<p>Correo electrónico: tienda@fanverse.com</p>
-				<p>Teléfono: +34 234 567 890</p>
+				<p>Teléfono: +34 635 087 841</p>
 			</div>
 		</div>
 		<div class="row">

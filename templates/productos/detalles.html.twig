@@ -68,6 +68,7 @@
 				</ul>
 			</div>
 
+			{# Dentro del navbar, a la derecha, mostramos el carrito #}
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
@@ -76,6 +77,7 @@
 							<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
 						</a>
 					</li>
+					{# Si el usuario está logueado, mostramos su nombre y el botón de logout. Si no, mostramos los botones de login y registro #}
 					{% if app.user %}
 						<li class="nav-item">
 							<a class="nav-link" href="{{ path('verPerfil') }}">{{ app.user.nombre }}</a>
@@ -101,8 +103,10 @@
 			</div>
 		</div>
 	</nav>
+	{# Dentro del div container, mostramos el contenido de la página #}
 	<div class="container py-5">
 		<div class="row">
+		{# En la columna de la izquierda, mostramos las imágenes del producto #}
 			<div class="col-md-6" id="texto">
 				<img src="{{ producto.image_link }}" class="img-fluid rounded mb-4" alt="{{ producto.nombre }}">
 				<div class="row">
@@ -124,41 +128,44 @@
 				<p class="text-muted mb-4">{{ producto.descripcion }}</p>
 				<p class="text-muted mb-4">Precio:
 					{{ producto.precio }}€</p>
-				{#TALLAS Y TAMAÑOS#}
+				{#Si el producto es de categoria 3, se muestran las tallas disponibles#}
 				{% if producto.categoria == 3 %}
 					<p class="text-muted mb-4">Talla:
-						<select class="form-select" name="talla" id="talla">
-							{% for talla in tallas %}
-								{% if talla.id == producto.getIdTalla() %}
-									<option value="{{ talla.id }}" data-talla="{{ talla.nombre }}">{{ talla.nombre }}</option>
-								{% endif %}
-							{% endfor %}
-						</select>
+						{% for talla in tallas %}
+							{% if talla.id == producto.getIdTalla() %}
+								<button type="button" class="btn btn-outline-dark" name="talla" value="{{ talla.id }}" data-talla="{{ talla.nombre }}">{{ talla.nombre }}</button>
+							{% else %}
+								<button type="button" class="btn btn-outline-dark" name="talla" value="{{ talla.id }}" data-talla="{{ talla.nombre }}" disabled>{{ talla.nombre }}</button>
+							{% endif %}
+						{% endfor %}
 					</p>
 				{% endif %}
+				{#Si el producto es de categoria 2, se muestran los tamaños disponibles#}
 				{% if producto.categoria == 2 %}
 					<p class="text-muted mb-4">Tamaño:
-						<select class="form-select" name="tamano" id="tamano">
-							{% for tamano in tamanos %}
-								{% if tamano.id == producto.getIdTamano() %}
-									<option value="{{ tamano.id }}" data-tamano="{{ tamano.nombre }}">{{ tamano.nombre }}</option>
-								{% endif %}
-							{% endfor %}
-						</select>
+						{% for tamano in tamanos %}
+							{% if tamano.id == producto.getIdTamano() %}
+								<button type="button" class="btn btn-outline-dark" name="tamano" value="{{ tamano.id }}" data-tamano="{{ tamano.nombre }}">{{ tamano.nombre }}</button>
+							{% else %}
+								<button type="button" class="btn btn-outline-dark" name="tamano" value="{{ tamano.id }}" data-tamano="{{ tamano.nombre }}" disabled>{{ tamano.nombre }}</button>
+							{% endif %}
+						{% endfor %}
 					</p>
 				{% endif %}
+				{# Stock que hay del producto #}
 				<p class="text-muted mb-4">Tiempo de envío: 48h</p>
 				<form method="post" action="{{ path('agregar_al_carrito', {'codprod': producto.codprod}) }}">
 					<p class="text-muted mb-4">Cantidad:
-						<select class="form-select" name="cantidad" id="cantidad">
-							{% for i in range(1, producto.stock + 0) %}
-								<option value="{{ i }}">{{ i }}</option>
-							{% endfor %}
-						</select>
+						{% if producto.stock > 0 %}
+							<input type="number" name="cantidad" id="cantidad" value="1" min="1" max="{{ producto.stock }}">
+						{% else %}
+							<input type="number" name="cantidad" id="cantidad" value="0" min="0" max="{{ producto.stock }}" disabled>
+						{% endif %}
 					</p>
 					<button type="submit" class="btn btn-outline-dark">Añadir al carrito</button>
 				</form>
 			</div>
+			{#Botones de compartir en redes sociales#}
 			<div class="my-5">
 				<p class="text-muted mb-4">Compartir en redes sociales:</p>
 				<a href="https://www.facebook.com/sharer/sharer.php?u={{ path('producto', {'codprod': producto.codprod}) }}" target="_blank" class="btn btn-primary">
@@ -170,5 +177,7 @@
 				</a>
 			</div>
 		</div>
+
+
 	</div>
 {% endblock %}

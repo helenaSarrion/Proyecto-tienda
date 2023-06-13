@@ -15,14 +15,6 @@ productos_por_categoria:
     controller: App\Controller\ProductosController::productosPorCategoria
     methods: [GET]
 
-productos_por_precio:
-  path: /productos/precio/{min}/{max}
-  controller: App\Controller\ProductosController::productosPorPrecio
-
-productos_por_nombre:
-  path: /productos/buscar
-  controller: App\Controller\ProductosController::buscarPorNombre
-  methods: GET
 
 producto:
   path: /producto/{codprod}
@@ -32,7 +24,3 @@ perfil_usuario:
     path: /perfil
     controller: App\Controller\UserController::verPerfil
 
-contacto_send:
-    path: /contacto/send
-    controller: App\Controller\ContactosController::sendContactForm
-    methods: [GET, POST]
