@@ -18,8 +18,8 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
-RUN php bin/console cache:clear --env=prod
-RUN php bin/console cache:warmup --env=prod
+RUN DATABASE_URL=mysql://null:null@127.0.0.1/null php bin/console cache:clear --env=prod
+RUN DATABASE_URL=mysql://null:null@127.0.0.1/null php bin/console cache:warmup --env=prod
 
 RUN chown -R www-data:www-data /var/www/html/var
 
