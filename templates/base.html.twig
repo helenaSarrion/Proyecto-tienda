@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		{#Favicon#}
+		<link rel="icon" href="https://banco-imagenes-helen.s3.eu-north-1.amazonaws.com/logo.png" type="image/png" sizes="16x16">
+		<title>
+			{% block title %}FanVerse
+			{% endblock %}
+		</title>
+		{% block stylesheets %}
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		{% endblock %}
+	</head>
+	<body>
+		<style>
+			body {
+				background-size: cover;
+				background-image: url("https://banco-imagenes-helen.s3.eu-north-1.amazonaws.com/fondo.jpg");
+			}
+		</style>
+		{% block javascripts %}
+			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		{% endblock %}
+
+		{% block body %}
+			{% include 'footer.html' %}
+		{% endblock %}
+		{#Footer#}
+		<style>
+			.card-img-top {
+				width: 200px;
+				height: 200px;
+				margin: 0 auto;
+				display: block;
+			}
+			.text-center {
+				color: black;
+				font-weight: bold;
+			}
+			.text-uppercase {
+				color: black;
+				font-weight: bold;
+			}
+		</style>
+		<hr>
+		<footer class="text-center text-lg-start text-muted">
+			<section class="">
+				<div class="container text-center text-md-start mt-5">
+					<div class="row mt-3">
+						<div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+							<h6 class="text-uppercase fw-bold mb-4">
+								Sobre nosotros
+							</h6>
+							<p>
+								Bienvenido/a a Fanverse, en esta web podras encontrar todo tipo de merchandising de tus series, peliculas, videojuegos y animes favoritos.																														
+						</div>
+						{#Metodos de pago#}
+						<div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+							<h6 class="text-uppercase fw-bold mb-4">
+								Métodos de pago
+							</h6>
+							<p>
+								<img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" alt="PayPal" width="100" height="26">
+							</p>
+							<p>
+								<img src="https://pay.google.com/about/static/images/logos/google-pay-logo.svg" alt="Google Pay" width="100" height="26">
+							</p>
+							<p>
+								<i class="fab fa-apple-pay fa-3x" alt="Apple Pay"></i>
+							</p>
+						</div>
+						{#Redes sociales#}
+						<div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+							<h6 class="text-uppercase fw-bold mb-4">
+								Redes sociales
+							</h6>
+							<p>
+								<a href="www.twitter.com" class="text-reset"><img src="https://img.icons8.com/color/512/twitter.png" alt="twitter" width="30" height="30"></a>
+								<a href="www.facebook.com" class="text-reset"><img src="https://img.icons8.com/color/512/facebook-new.png" alt="facebook" width="30" height="30"></a>
+								<a href="www.instagram.com" class="text-reset"><img src="https://img.icons8.com/fluency/512/instagram-new.png" alt="instagram" width="30" height="30"></a>
+								<a href="www.tiktok.com" class="text-reset"><img src="https://img.icons8.com/color/512/tiktok--v2.png" alt="tiktok" width="30" height="30"></a>
+							</p>
+						</div>
+						{#Contacto#}
+						<div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+							<h6 class="text-uppercase fw-bold mb-4">Contacto</h6>
+							<p>
+								<i class="fas fa-home me-3 text-secondary"></i>Av. de la Constitución, 1, 28071 Madrid
+							</p>
+							<p>
+								<i class="fas fa-envelope me-3 text-secondary"></i>
+								fanverse@fanverse.com
+							</p>
+							<p>
+								<i class="fas fa-phone me-3 text-secondary"></i>
+								+34 123 456 789
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+			{#Copyrigth#}
+			<div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+				<p>&copy;
+					{{ "now"|date("Y") }}
+					Todos los derechos reservados</p>
+			</div>
+		</footer>
+	</body>
+</html>

@@ -1,0 +1,187 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<style>
+		body {
+			font-family: 'Trooper';
+			color: #ff8ba7;
+		}
+		.nav-item {
+			font-weight: bold;
+			text-transform: uppercase;
+			color: black;
+		}
+		#titulo {
+			font-size: 50px;
+			color: black;
+		}
+		#texto-card {
+			color: black;
+			font-weight: bold;
+		}
+		.card-title {
+			font-size: 20px;
+			font-weight: bold;
+		}
+		#recientes {
+			color: black;
+			font-weight: bold;
+		}
+		.navbar-light .navbar-nav .nav-link {
+			color: black;
+			font-weight: bold;
+		}
+	</style>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" id="titulo" href="{{ path('inicio') }}">FANVERSE</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="container">
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="nav nav-pills mx-auto fill justify-content-center">
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('inicio') }}">Inicio</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('nosotros') }}">Sobre nosotros</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('productos') }}">Tienda</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="btn btn-outline-dark m-2" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Categorias
+						</a>
+						{# mostramos las categorias en el dropdown #}
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							{% for categoria in categorias %}
+								<a class="dropdown-item" href="{{ path('productos_por_categoria', {'categoria': categoria.categoria}) }}">{{ categoria.nombre }}</a>
+							{% endfor %}
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			{# Dentro del navbar, a la derecha, mostramos el carrito #}
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('carrito') }}">
+							<i class="fas fa-shopping-cart fa-lg"></i>
+							<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
+						</a>
+					</li>
+					{# Si el usuario está logueado, mostramos su nombre y el botón de logout. Si no, mostramos los botones de login y registro #}
+					{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('verPerfil') }}">{{ app.user.nombre }}</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('logout') }}">
+								<i class="fas fa-sign-out-alt"></i>
+							</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('app_login') }}">
+								<i class="fas fa-user"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('registro') }}">
+								<i class="fas fa-user-plus"></i>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+	{# Imagen de banner #}
+	<div class="p-5 text-center" style="background-image: url('https://banco-imagenes-helen.s3.eu-north-1.amazonaws.com/portada.jpg'); background-size: cover; height: 350px;">
+		<div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
+			<div class="d-flex justify-content-center align-items-center h-100">
+				<div class="text-white" style="padding: 50px;">
+					<h1 class="mb-3">FANVERSE</h1>
+					<h4 class="mb-3">Entra y descubre nuestros productos</h4>
+					<a class="btn btn-outline-light btn-lg ripple-surface" href="{{ path('productos') }}" role="button">Productos</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12" id="recientes">
+				<h1 class="text-center mt-5 mb-5">Tipos de productos</h1>
+			</div>
+		</div>
+		{# Mencionamos los tres tipos de productos que tenemos, usando la clase card de bootstrap #}
+		<div class="row justify-content-center">
+			<div class="col-md-4">
+				<div class="bg-image card border-1 shadow-1-strong" style="background-image: url('https://banco-imagenes-helen.s3.eu-north-1.amazonaws.com/slide.jpg');">
+					<div class="card-body text-white">
+						<h5 class="card-title">Camisetas</h5>
+						<p class="card-text">
+							Todas nuestras camisetas estan hechas con materiales de alta calidad, lo que las hace muy cómodas y duraderas.
+													Disponibles en diferentes tallas y con diseños exclusivos.
+													Podras encontrar diferentes diseños de tus series, peliculas, videojuegos y animes favoritos.
+						</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="bg-image card border-1 shadow-1-strong" style="background-image: url('https://banco-imagenes-helen.s3.eu-north-1.amazonaws.com/slide.jpg');">
+					<div class="card-body text-white">
+						<h5 class="card-title">Poster</h5>
+						<p class="card-text">
+							Disponibles en diferentes tamaños. Desde más pequeños como A4 hasta opciones más grandes como A1, puedes elegir el tamaño que mejor se ajuste al espacio que deseas decorar.
+													Con ellos agregaras personalidad y estilo a tu hogar.
+						</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4">
+				<div class="bg-image card border-1 shadow-1-strong" style="background-image: url('https://banco-imagenes-helen.s3.eu-north-1.amazonaws.com/slide.jpg');">
+					<div class="card-body text-white">
+						<h5 class="card-title">Tazas</h5>
+						<p class="card-text">
+							Estan hechas con ceramica de alta calidad, lo que las hace aptas para el microondas y el lavavajillas. Disponibles en diferentes tamaños y con diseños exclusivos.
+													Podras encontrar la taza perfecta para ti o para regalar a esa persona especial.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12" id="recientes">
+					<h1 class="text-center mt-5 mb-5">Productos recientes</h1>
+				</div>
+			</div>
+			<div class="container">
+				<div class="row">
+				{# Mostramos los productos añadidos recientemente, con sus datos y una imagen #}
+					{% for producto in productosRecientes %}
+						<div class="col-sm-4">
+							<div class="card mb-4 rounded-0 transparent" id="texto-card">
+								<img class="card-img-top" src="{{ producto.image_link }}" alt="Card image cap" style="object-fit: contain; width: 100%; height: 300px;">
+								<div class="card-body">
+									<h5 class="card-title">{{ producto.nombre }}</h5>
+									<p class="card-text">{{ producto.descripcion }}</p>
+									<p class="card-text">{{ producto.precio }}€</p>
+									<a href="{{ path('producto', {'codprod': producto.codprod}) }}" class="btn btn-outline-dark">Ver producto</a>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+
+	{% endblock %}

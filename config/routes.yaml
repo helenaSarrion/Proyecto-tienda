@@ -1,0 +1,26 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+inicio:
+    path: /
+    controller: App\Controller\InicioController::index
+
+nosotros:
+    path: /nosotros
+    controller: App\Controller\NosotrosController::nosotros
+
+productos_por_categoria:
+    path: /productos/{categoria}
+    controller: App\Controller\ProductosController::productosPorCategoria
+    methods: [GET]
+
+
+producto:
+  path: /producto/{codprod}
+  controller: App\Controller\ProductosController::show
+
+perfil_usuario:
+    path: /perfil
+    controller: App\Controller\UserController::verPerfil
+

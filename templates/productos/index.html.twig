@@ -1,0 +1,154 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<style>
+		body {
+			font-family: 'Trooper';
+			color: #ff8ba7;
+		}
+		.nav-item {
+			font-weight: bold;
+			text-transform: uppercase;
+			color: black;
+		}
+		#titulo {
+			font-size: 50px;
+			color: black;
+		}
+		.btn-pink {
+			background-color: #ff8ba7;
+			color: black;
+			font-weight: bold;
+		}
+		#texto-card {
+			color: black;
+			font-weight: bold;
+		}
+		.card-title {
+			font-size: 20px;
+			font-weight: bold;
+		}
+		#recientes {
+			color: black;
+			font-weight: bold;
+		}
+		.navbar-light .navbar-nav .nav-link {
+			color: black;
+			font-weight: bold;
+		}
+		#texto {
+			color: black;
+			font-weight: bold;
+		}
+	</style>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" id="titulo" href="{{ path('inicio') }}">FANVERSE</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="container">
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="nav nav-pills mx-auto fill justify-content-center">
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('inicio') }}">Inicio</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('nosotros') }}">Sobre nosotros</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('productos') }}">Tienda</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="btn btn-outline-dark m-2" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Categorias
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							{% for categoria in categorias %}
+								<a class="dropdown-item" href="{{ path('productos_por_categoria', {'categoria': categoria.categoria}) }}">{{ categoria.nombre }}</a>
+							{% endfor %}
+						</div>
+					</li>
+				</ul>
+			</div>
+			{# Dentro del navbar, a la derecha, mostramos el carrito #}
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('carrito') }}">
+							<i class="fas fa-shopping-cart fa-lg"></i>
+							<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
+						</a>
+					</li>
+					{# Si el usuario está logueado, mostramos su nombre y el botón de logout. Si no, mostramos los botones de login y registro #}
+					{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('verPerfil') }}">{{ app.user.nombre }}</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('logout') }}">
+								<i class="fas fa-sign-out-alt"></i>
+							</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('app_login') }}">
+								<i class="fas fa-user"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('registro') }}">
+								<i class="fas fa-user-plus"></i>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+	{#Seleccionamos entre esas opciones que rango de productos queremos ver #}
+	<div class="container my-5">
+		<div class="row container-fluid">
+			<div class="col-md-6">
+				<form class="form-inline" method="GET" action="{{ path('productos') }}">
+					<div class="form-group" id="texto">
+						<label class="mr-2" for="precio">Filtrar por precio:</label>
+						<select class="form-control" id="precio" name="precio" onchange="this.form.submit()">
+							<option value="">Selecciona uno</option>
+							<option value="-1">Todos</option>
+							<option value="0-50">Menos de 50€</option>
+							<option value="50-100">50€ - 100€</option>
+							<option value="100-200">100€ - 200€</option>
+							<option value="200+">Más de 200€</option>
+						</select>
+					</div>
+				</form>
+			</div>
+		</div>
+		<br><br>
+		{# Mostramos los productos y sus informacion #}
+		<div class="container my-4">
+			<div class="row">
+				{% for producto in productos %}
+					<div class="col-md-4 mb-4">
+						<div class="card h-100 shadow">
+							<a href="{{ path('producto', {'codprod': producto.codprod}) }}">
+								<img src="{{ producto.image_link }}" class="card-img" alt="{{ producto.nombre }}" style="object-fit: contain; width: 100%; height: 300px;">
+							</a>
+							<div class="card-body" id="texto">
+								<h5 class="card-title">{{ producto.nombre }}</h5>
+								<p class="card-text">{{ producto.descripcion }}</p>
+								{#El formato de los precios se mostrara como 0,00€#}
+								<h6 class="card-subtitle mb-2 text-muted">{{ producto.precio|number_format(2, ',', '.') }}€</h6>
+							</div>
+							<div class="card-footer d-flex justify-content-between align-items-center">
+							{# Debajo de la informacion del producto, mostramos un boton para añadirlo al carrito #}
+								<button type="button" class="btn btn-outline-dark" onclick="window.location='{{ path('agregar_al_carrito', {'codprod': producto.codprod}) }}'">Añadir al carrito</button>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div></div>{% endblock %}

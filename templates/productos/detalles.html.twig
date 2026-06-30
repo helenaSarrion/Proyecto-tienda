@@ -1,0 +1,183 @@
+{% extends 'base.html.twig' %}
+{% block head %}
+	<meta property="og:title" content="{{ producto.nombre }}"/>
+	<meta property="og:description" content="{{ producto.descripcion }}"/>
+{% endblock %}
+
+{% block body %}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+	<style>
+		body {
+			font-family: 'Trooper';
+			color: #ff8ba7;
+		}
+		.nav-item {
+			font-weight: bold;
+			text-transform: uppercase;
+			color: black;
+		}
+		#titulo {
+			font-size: 50px;
+			color: black;
+		}
+		.btn-pink {
+			background-color: #ff8ba7;
+			color: black;
+			font-weight: bold;
+		}
+		#texto-card {
+			color: black;
+			font-weight: bold;
+		}
+		.card-title {
+			font-size: 20px;
+			font-weight: bold;
+		}
+		#recientes {
+			color: black;
+			font-weight: bold;
+		}
+		.navbar-light .navbar-nav .nav-link {
+			color: black;
+			font-weight: bold;
+		}
+		#texto {
+			color: black;
+			font-weight: bold;
+		}
+	</style>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" id="titulo" href="{{ path('inicio') }}">FANVERSE</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="container">
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="nav nav-pills mx-auto fill justify-content-center">
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('inicio') }}">Inicio</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('nosotros') }}">Sobre nosotros</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('productos') }}">Tienda</a>
+					</li>
+				</ul>
+			</div>
+
+			{# Dentro del navbar, a la derecha, mostramos el carrito #}
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('carrito') }}">
+							<i class="fas fa-shopping-cart fa-lg"></i>
+							<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
+						</a>
+					</li>
+					{# Si el usuario está logueado, mostramos su nombre y el botón de logout. Si no, mostramos los botones de login y registro #}
+					{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('verPerfil') }}">{{ app.user.nombre }}</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('logout') }}">
+								<i class="fas fa-sign-out-alt"></i>
+							</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('app_login') }}">
+								<i class="fas fa-user"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('registro') }}">
+								<i class="fas fa-user-plus"></i>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+	{# Dentro del div container, mostramos el contenido de la página #}
+	<div class="container py-5">
+		<div class="row">
+		{# En la columna de la izquierda, mostramos las imágenes del producto #}
+			<div class="col-md-6" id="texto">
+				<img src="{{ producto.image_link }}" class="img-fluid rounded mb-4" alt="{{ producto.nombre }}">
+				<div class="row">
+					{% for additionalImage in additionalImages %}
+						<div class="col-md-4 mb-4">
+							<a href="{{ additionalImage }}" data-toggle="lightbox" data-gallery="additional-images">
+								<img src="{{ additionalImage }}" class="img-fluid rounded" title="{{ producto.nombre }}">
+							</a>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+
+			<div
+				class="col-md-6" id="texto">
+				{#nombre del producto#}
+				<h1 class="mb-4">{{ producto.nombre }}</h1>
+				{#descripcion del producto#}
+				<p class="text-muted mb-4">{{ producto.descripcion }}</p>
+				<p class="text-muted mb-4">Precio:
+					{{ producto.precio }}€</p>
+				{#Si el producto es de categoria 3, se muestran las tallas disponibles#}
+				{% if producto.categoria == 3 %}
+					<p class="text-muted mb-4">Talla:
+						{% for talla in tallas %}
+							{% if talla.id == producto.getIdTalla() %}
+								<button type="button" class="btn btn-outline-dark" name="talla" value="{{ talla.id }}" data-talla="{{ talla.nombre }}">{{ talla.nombre }}</button>
+							{% else %}
+								<button type="button" class="btn btn-outline-dark" name="talla" value="{{ talla.id }}" data-talla="{{ talla.nombre }}" disabled>{{ talla.nombre }}</button>
+							{% endif %}
+						{% endfor %}
+					</p>
+				{% endif %}
+				{#Si el producto es de categoria 2, se muestran los tamaños disponibles#}
+				{% if producto.categoria == 2 %}
+					<p class="text-muted mb-4">Tamaño:
+						{% for tamano in tamanos %}
+							{% if tamano.id == producto.getIdTamano() %}
+								<button type="button" class="btn btn-outline-dark" name="tamano" value="{{ tamano.id }}" data-tamano="{{ tamano.nombre }}">{{ tamano.nombre }}</button>
+							{% else %}
+								<button type="button" class="btn btn-outline-dark" name="tamano" value="{{ tamano.id }}" data-tamano="{{ tamano.nombre }}" disabled>{{ tamano.nombre }}</button>
+							{% endif %}
+						{% endfor %}
+					</p>
+				{% endif %}
+				{# Stock que hay del producto #}
+				<p class="text-muted mb-4">Tiempo de envío: 48h</p>
+				<form method="post" action="{{ path('agregar_al_carrito', {'codprod': producto.codprod}) }}">
+					<p class="text-muted mb-4">Cantidad:
+						{% if producto.stock > 0 %}
+							<input type="number" name="cantidad" id="cantidad" value="1" min="1" max="{{ producto.stock }}">
+						{% else %}
+							<input type="number" name="cantidad" id="cantidad" value="0" min="0" max="{{ producto.stock }}" disabled>
+						{% endif %}
+					</p>
+					<button type="submit" class="btn btn-outline-dark">Añadir al carrito</button>
+				</form>
+			</div>
+			{#Botones de compartir en redes sociales#}
+			<div class="my-5">
+				<p class="text-muted mb-4">Compartir en redes sociales:</p>
+				<a href="https://www.facebook.com/sharer/sharer.php?u={{ path('producto', {'codprod': producto.codprod}) }}" target="_blank" class="btn btn-primary">
+					<i class="fab fa-facebook-f"></i>
+
+				</a>
+				<a href="https://twitter.com/intent/tweet?text={{ path('producto', {'codprod': producto.codprod}) }}" target="_blank" class="btn btn-info">
+					<i class="fab fa-twitter"></i>
+				</a>
+			</div>
+		</div>
+
+
+	</div>
+{% endblock %}

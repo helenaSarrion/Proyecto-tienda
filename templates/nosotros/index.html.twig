@@ -1,0 +1,127 @@
+{% extends 'base.html.twig'%}
+{% block body %}
+	<style>
+		body {
+			font-family: 'Trooper';
+			color: #ff8ba7;
+		}
+		.nav-item {
+			font-weight: bold;
+			text-transform: uppercase;
+			color: black;
+		}
+		#titulo {
+			font-size: 50px;
+			color: black;
+		}
+		.btn-pink {
+			background-color: #ff8ba7;
+			color: black;
+			font-weight: bold;
+		}
+		#texto-card {
+			color: black;
+			font-weight: bold;
+		}
+		.card-title {
+			font-size: 20px;
+			font-weight: bold;
+		}
+		#recientes {
+			color: black;
+			font-weight: bold;
+		}
+		.navbar-light .navbar-nav .nav-link {
+			color: black;
+			font-weight: bold;
+		}
+
+		#texto {
+			color: black;
+			font-weight: bold;
+		}
+	</style>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" id="titulo" href="{{ path('inicio') }}">FANVERSE</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="container">
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="nav nav-pills mx-auto fill justify-content-center">
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('inicio') }}">Inicio</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('nosotros') }}">Sobre nosotros</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('productos') }}">Tienda</a>
+					</li>
+				</ul>
+			</div>
+
+			{# Dentro del navbar, a la derecha, mostramos el carrito #}
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('carrito') }}">
+							<i class="fas fa-shopping-cart fa-lg"></i>
+							<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
+						</a>
+					</li>
+					{# Si el usuario está logueado, mostramos su nombre y el botón de logout. Si no, mostramos los botones de login y registro #}
+					{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('verPerfil') }}">{{ app.user.nombre }}</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('logout') }}">
+								<i class="fas fa-sign-out-alt"></i>
+							</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('app_login') }}">
+								<i class="fas fa-user"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('registro') }}">
+								<i class="fas fa-user-plus"></i>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+	{#Descripcion de la pagina, de lo que ofrecemos y contacto#}
+	<div class="container mt-5 mb-5" id="texto">
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<h1>Nosotros</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8">
+				<p>Somos una tienda de merchandising especializada en productos con diseños propios de alta calidad, inspirados en tus grupos musicales, series y películas favoritas.</p>
+
+				<p>Podras encontrar desde camisetas hasta pósters, ¡tenemos todo lo que necesitas para expresar tu estilo y personalidad!</p>
+
+				<p>No dudes en seguirnos en nuestras redes sociales para estar al día con nuestras últimas novedades, promociones y lanzamientos de productos:</p>
+			</div>
+			<div class="col-md-4">
+				<h4>Contacto</h4>
+				<p>Correo electrónico: tienda@fanverse.com</p>
+				<p>Teléfono: +34 635 087 841</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<p>¡Gracias por elegirnos como tu tienda de merchandising favorita!</p>
+			</div>
+		</div>
+	</div>
+{% endblock %}

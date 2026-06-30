@@ -1,0 +1,207 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Carrito
+{% endblock %}
+
+
+{% block body %}
+	<style>
+		body {
+			font-family: 'Trooper';
+			color: #ff8ba7;
+		}
+		.nav-item {
+			font-weight: bold;
+			text-transform: uppercase;
+			color: black;
+		}
+		#titulo {
+			font-size: 50px;
+			color: black;
+		}
+		#texto-card {
+			color: black;
+			font-weight: bold;
+		}
+		.card-title {
+			font-size: 20px;
+			font-weight: bold;
+		}
+		#recientes {
+			color: black;
+			font-weight: bold;
+		}
+		.navbar-light .navbar-nav .nav-link {
+			color: black;
+			font-weight: bold;
+		}
+	</style>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" id="titulo" href="{{ path('inicio') }}">FANVERSE</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="container">
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="nav nav-pills mx-auto fill justify-content-center">
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('inicio') }}">Inicio</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('nosotros') }}">Sobre nosotros</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('productos') }}">Tienda</a>
+					</li>
+				</ul>
+			</div>
+
+			{# Dentro del navbar, a la derecha, mostramos el carrito #}
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('carrito') }}">
+							<i class="fas fa-shopping-cart fa-lg"></i>
+							<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
+						</a>
+					</li>
+			{# Si el usuario está logueado, mostramos su nombre y el botón de logout. Si no, mostramos los botones de login y registro #}
+					{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('verPerfil') }}">{{ app.user.nombre }}</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('logout') }}">
+								<i class="fas fa-sign-out-alt"></i>
+							</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('app_login') }}">
+								<i class="fas fa-user"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('registro') }}">
+								<i class="fas fa-user-plus"></i>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<h1 class="text-center">Carrito</h1>
+	{# Si el carrito está vacío, mostramos un mensaje. Si no, mostramos la tabla con los productos #}
+	{% if productos is empty %}
+		<p class="text-center">No hay productos en el carrito</p>
+	{% else %}
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+				{#creamos la tabla con los datos de los productos#}
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Imagen</th>
+								<th>Producto</th>
+								<th>Talla</th>
+								<th>Tamaño</th>
+								<th>Precio</th>
+								<th>Cantidad</th>
+								<th>Subtotal</th>
+								<th>Acciones</th>
+							</tr>
+						</thead>
+						<tbody>
+						{#creamos una variable para el total#}
+							{% set total = 0 %}
+							{#recorremos los productos del carrito#}
+							{% for producto in productos %}
+								<tr>
+								{#mostramos los datos de los productos#}
+									<td><img src="{{ producto.image_link }}" width="200px" height="260px"></td>
+									<td>{{ producto.nombre }}</td>
+									{#si el producto pertenece a la categoria 3, mostramos la talla. Si no, mostramos un guión#}
+									{#si el producto pertenece a la categoria 2, mostramos el tamaño. Si no, mostramos un guión#}
+									{% if producto.categoria == 3 %}
+										<td>
+											{% for talla in tallas %}
+												{% if talla.id == producto.getIdTalla() %}
+													{{ talla.nombre }}
+												{% endif %}
+											{% endfor %}
+										</td>
+										<td>-</td>
+									{% elseif producto.categoria == 2 %}
+										<td>-</td>
+										<td>
+											{% for tamano in tamanos %}
+												{% if tamano.id == producto.getIdTamano() %}
+													{{ tamano.nombre }}
+												{% endif %}
+											{% endfor %}
+										</td>
+									{% else %}
+										<td>-</td>
+										<td>-</td>
+									{% endif %}
+									{#muestra el precio del producto#}
+									<td>{{ producto.precio }}€</td>
+									<td>
+									{#si el usuario está logueado, mostramos el formulario para actualizar la cantidad del producto#}
+										<form method="POST" action="{{ path('agregar_al_carrito', {'codprod': producto.codprod}) }}">
+											<input type="number" name="cantidad" value="{{ carrito[producto.codprod] }}" min="1" max="{{ producto.stock }}">
+											{% if app.user %}
+												<button type="submit" class="btn btn-outline-dark">Actualizar</button>
+											{% endif %}
+										</form>
+									</td>
+									{#mostramos el subtotal del producto#}
+									<td>{{ producto.precio * carrito[producto.codprod] }}€</td>
+									<td>
+									{#si el usuario está logueado, mostramos el botón para quitar el producto del carrito#}
+										<a href="{{ path('quitar_del_carrito', {'codprod': producto.codprod}) }}" class="btn btn-outline-dark">Quitar</a>
+									</td>
+								</tr>
+								{#sumamos el subtotal al total#}
+								{% set total = total + (producto.precio * carrito[producto.codprod]) %}
+							{% endfor %}
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="3">
+									<strong>Total:</strong>
+								</td>
+								<td>
+									<strong>{{ total }}€</strong>
+								</td>
+								<td>
+									<a href="{{ path('vaciar_carrito') }}" class="btn btn-outline-dark">Vaciar</a>
+								</td>
+							</tr>
+							{#si el usuario no está logueado, mostramos el botón para iniciar sesión. Si está logueado, mostramos el botón para realizar la compra#}
+							{% if not app.user %}
+								<tr>
+									<td colspan="5">
+										<a href="{{ path('app_login') }}" class="btn btn-outline-dark">Iniciar sesión</a>
+									</td>
+								</tr>
+							{% else %}
+								<tr>
+									<td colspan="5">
+										<form method="POST" action="{{ path('realizar_compra') }}">
+											<button type="submit" class="btn btn-outline-dark">Realizar compra</button>
+										</form>
+									</td>
+								</tr>
+							{% endif %}
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+		<a href="{{ path('inicio') }}" class="btn btn-outline-dark m-2">Volver</a>
+	{% endif %}
+{% endblock %}

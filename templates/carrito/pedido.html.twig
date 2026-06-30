@@ -1,0 +1,191 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<style>
+		body {
+			font-family: 'Trooper';
+			color: #ff8ba7;
+		}
+		.nav-item {
+			font-weight: bold;
+			text-transform: uppercase;
+			color: black;
+		}
+		#titulo {
+			font-size: 50px;
+			color: black;
+		}
+		.btn-pink {
+			background-color: #ff8ba7;
+			color: black;
+			font-weight: bold;
+		}
+		#texto-card {
+			color: black;
+			font-weight: bold;
+		}
+		.card-title {
+			font-size: 20px;
+			font-weight: bold;
+		}
+		#recientes {
+			color: black;
+			font-weight: bold;
+		}
+		.navbar-light .navbar-nav .nav-link {
+			color: black;
+			font-weight: bold;
+		}
+		#texto {
+			color: black;
+			font-weight: bold;
+		}
+	</style>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" id="titulo" href="{{ path('inicio') }}">FANVERSE</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="container">
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="nav nav-pills mx-auto fill justify-content-center">
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('inicio') }}">Inicio</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('nosotros') }}">Sobre nosotros</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-outline-dark m-2" href="{{ path('productos') }}">Tienda</a>
+					</li>
+				</ul>
+			</div>
+
+			{# Dentro del navbar, a la derecha, mostramos el carrito #}
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('carrito') }}">
+							<i class="fas fa-shopping-cart fa-lg"></i>
+							<span class="badge badge-pill badge-primary">{{ app.session.get('carrito')|length }}</span>
+						</a>
+					</li>
+					{# Si el usuario está logueado, mostramos su nombre y el botón de logout. Si no, mostramos los botones de login y registro #}
+					{% if app.user %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('verPerfil') }}">{{ app.user.nombre }}</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('logout') }}">
+								<i class="fas fa-sign-out-alt"></i>
+							</a>
+						</li>
+					{% else %}
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('app_login') }}">
+								<i class="fas fa-user"></i>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ path('registro') }}">
+								<i class="fas fa-user-plus"></i>
+							</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container mt-5" id="texto">
+		<div class="row">
+			<div class="col-md-8">
+				<h1>Realizar Compra</h1>
+				<hr>
+				{# Si el usuario no está logueado, mostramos un mensaje de error #}
+				{% if not app.user %}
+					<div class="alert alert-danger" role="alert">
+						Debes estar logueado para realizar una compra.
+					</div>
+				{% endif %}
+				{# Si el usuario está logueado, mostramos el formulario de compra #}
+				<form method="post" action="{{ path('realizar_compra') }}" class="needs-validation" novalidate>
+					{{ form_start(form) }}
+					<div class="form-group">
+						{{ form_label(form.nombre) }}
+						{{ form_widget(form.nombre, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+						<div class="invalid-feedback">Por favor ingrese su nombre.</div>
+					</div>
+					<div class="form-group">
+						{{ form_label(form.direccion) }}
+						{{ form_widget(form.direccion, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+						<div class="invalid-feedback">Por favor ingrese su dirección.</div>
+					</div>
+					<div class="form-group">
+						{{ form_label(form.telefono) }}
+						{{ form_widget(form.telefono, {'attr': {'class': 'form-control', 'required': 'required', 'pattern': '[0-9]{9}'}}) }}
+						<div class="invalid-feedback">Por favor ingrese un número de teléfono válido (9 dígitos).</div>
+					</div>
+					<div class="form-group">
+						{{ form_label(form.email) }}
+						{{ form_widget(form.email, {'attr': {'class': 'form-control', 'required': 'required', 'pattern': '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$'}}) }}
+						<div class="invalid-feedback">Por favor ingrese un correo electrónico válido.</div>
+					</div>
+					<div class="form-group">
+						{{ form_label(form.metodoPago) }}
+						{{ form_widget(form.metodoPago, {'attr': {'class': 'form-control', 'required': 'required'}}) }}
+					</div>
+					{{ form_widget(form.confirmar, {'attr': {'class': 'btn btn-outline-dark', 'onclick': 'validateForm(event)'}}) }}
+					{{ form_end(form) }}
+				</form>
+			</div>
+			<div class="col-md-4">
+				<h2>Resumen del Pedido</h2>
+				<hr>
+				<ul
+					class="list-group">
+					{# Recorremos el carrito y mostramos los productos que contiene #}
+					{% set total = 0 %}
+					{% for producto in productos %}
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							<div class="d-flex flex-grow-1">
+								<span class="mr-3">{{ producto.nombre }}</span>
+								<span class="mr-3">x</span>
+								<span>{{ carrito[producto.codprod] }}</span>
+							</div>
+							{# Calculamos el subtotal de cada producto #}
+							{% set subtotal = producto.precio * carrito[producto.codprod] %}
+							<span class="badge badge badge-dark">{{ subtotal | currency }}</span>
+						</li>
+						{% set total = total + subtotal %}
+					{% endfor %}
+					<li class="list-group-item d-flex justify-content-between align-items-center font-weight-bold">
+						Total
+						<span class="badge bbadge badge-dark">{{ total|currency }}</span>
+					</li>
+
+					<li class="list-group-item d-flex justify-content-between align-items-center">
+						Envío
+						<span class="badge badge badge-dark">Gratis</span>
+					</li>
+
+
+				</ul>
+
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// Validación del formulario de compra, para que no se envíe vacío y para que el email tenga un formato correcto
+function validateForm(event) {
+var form = event.target.form;
+if (form.checkValidity() === false) {
+event.preventDefault();
+event.stopPropagation();
+}
+form.classList.add('was-validated');
+}
+	</script>
+
+{% endblock %}
