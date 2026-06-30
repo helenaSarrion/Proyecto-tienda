@@ -12,10 +12,15 @@ ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
+
 WORKDIR /var/www/html
 COPY . .
 
-RUN composer require sensio/framework-extra-bundle --no-update
 RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+RUN php bin/console cache:clear --env=prod
+RUN php bin/console cache:warmup --env=prod
+
+RUN chown -R www-data:www-data /var/www/html/var
 
 EXPOSE 80
