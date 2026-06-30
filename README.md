@@ -10,10 +10,9 @@
 2. Ve a la carpeta del proyecto
 `cd proyecto-tienda `
 
-3. Arranca primero Xampp o Wamp
+3. Arranca primero Xampp
 `instalalo desde sus paginas oficiales` 
 `https://www.apachefriends.org/es/download.html`
-`https://www.wampserver.com/en/`
 
 4. Arranca el servidor local
 `php -S localhost:8000 -t public`
